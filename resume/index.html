@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume — Michael Fan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@300;400&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Instrument Serif', 'Georgia', 'serif'],
+            plex: ['IBM Plex Mono', 'Menlo', 'monospace'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html {
+      scroll-padding-top: 140px;
+    }
+
+    .expand-text {
+      max-height: 96px;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .expand-text.expanded {
+      max-height: 2000px;
+    }
+
+    .read-more-btn {
+      cursor: pointer;
+    }
+
+    .read-more-btn.hidden-btn {
+      display: none;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: #6b7280;
+      line-height: 1.5;
+      white-space: nowrap;
+    }
+
+    /* Mega Menu Styles */
+    #megaMenu {
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      clip-path: inset(0 0 100% 0);
+    }
+    #megaMenu.active {
+      clip-path: inset(0 0 0 0);
+    }
+    .mega-menu-item:hover .mega-thumb {
+      transform: scale(1.02);
+      background-color: #e2ddd5;
+    }
+  </style>
+</head>
+
+<body class="bg-[#e9e5df] min-h-screen font-sans text-[#1f2937]">
+
+  <!-- Navbar -->
+  <nav id="mainNav"
+    class="fixed top-0 left-0 right-0 z-[60] bg-[#e9e5df] border-b border-transparent transition-colors duration-300">
+    <div class="max-w-[1164px] mx-auto px-6 lg:px-0 h-24 flex items-center justify-between">
+      <a href="../homepage/index.html" class="font-serif text-2xl text-[#0a0a0a] tracking-[-0.6px]">Michael. Fan</a>
+      <div class="flex items-center gap-12">
+        <a href="javascript:void(0)" id="workToggle"
+          class="font-plex text-[12px] tracking-[2.4px] uppercase text-black/60 hover:text-black transition-colors">Work</a>
+        <a href="#contact"
+          class="flex items-center justify-center bg-[#0a0a0a] text-white font-plex font-medium text-[12px] leading-[18px] tracking-[2.4px] uppercase px-[32px] py-[12px] rounded-[10px] hover:bg-black/80 transition-all duration-300">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mega Menu Overlay -->
+  <div id="megaMenu" class="fixed inset-0 z-[55] bg-[#e9e5df] overflow-y-auto invisible">
+    <div class="max-w-[1164px] mx-auto px-6 lg:px-0 pt-40 pb-20">
+      <div class="flex items-center justify-between border-b border-black/10 pb-8 mb-12">
+        <span class="font-plex text-[10px] tracking-[3px] uppercase text-black/40">Select a Case Study</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-20 gap-y-16">
+        <!-- 01 -->
+        <a href="../project_1/index.html" class="mega-menu-item group flex items-start gap-6">
+          <div class="mega-thumb w-[120px] h-[120px] bg-[#e2ddd5]/50 rounded-[12px] shrink-0 overflow-hidden transition-all duration-500">
+            <img src="../project_1/image/megamenu image-01-opt.webp" alt="Personal Loan Redesign" class="w-full h-full object-cover">
+          </div>
+          <div class="pt-2">
+            <span class="block font-plex text-[11px] text-black/30 mb-2">01</span>
+            <h4 class="font-instrument text-[22px] leading-[1.2] text-[#1f2937] group-hover:text-black transition-colors">Personal Loan<br>Tactical Blog Redesign</h4>
+          </div>
+        </a>
+        <!-- 02 -->
+        <a href="../project_2/index.html" class="mega-menu-item group flex items-start gap-6">
+          <div class="mega-thumb w-[120px] h-[120px] bg-[#e2ddd5]/50 rounded-[12px] shrink-0 overflow-hidden transition-all duration-500">
+            <img src="../project_1/image/megamenu image-02-opt.webp" alt="Manulife Optimization" class="w-full h-full object-cover">
+          </div>
+          <div class="pt-2">
+            <span class="block font-plex text-[11px] text-black/30 mb-2">02</span>
+            <h4 class="font-instrument text-[22px] leading-[1.2] text-[#1f2937] group-hover:text-black transition-colors">Manulife Lead<br>Generation Optimization</h4>
+          </div>
+        </a>
+        <!-- 03 -->
+        <a href="../project_3/index.html" class="mega-menu-item group flex items-start gap-6">
+          <div class="mega-thumb w-[120px] h-[120px] bg-[#e2ddd5]/50 rounded-[12px] shrink-0 overflow-hidden transition-all duration-500">
+            <img src="../project_1/image/megamenu image-03-opt.webp" alt="MoneyHero Revamp" class="w-full h-full object-cover">
+          </div>
+          <div class="pt-2">
+            <span class="block font-plex text-[11px] text-black/30 mb-2">03</span>
+            <h4 class="font-instrument text-[22px] leading-[1.2] text-[#1f2937] group-hover:text-black transition-colors">MoneyHero Result<br>Page Revamp</h4>
+          </div>
+        </a>
+        <!-- 04 -->
+        <a href="../project_4/index.html" class="mega-menu-item group flex items-start gap-6">
+          <div class="mega-thumb w-[120px] h-[120px] bg-[#e2ddd5]/50 rounded-[12px] shrink-0 overflow-hidden transition-all duration-500">
+            <img src="../project_1/image/megamenu image-04-opt.webp" alt="Campaign Optimization" class="w-full h-full object-cover">
+          </div>
+          <div class="pt-2">
+            <span class="block font-plex text-[11px] text-black/30 mb-2">04</span>
+            <h4 class="font-instrument text-[22px] leading-[1.2] text-[#1f2937] group-hover:text-black transition-colors">Campaign Page<br>Optimization</h4>
+          </div>
+        </a>
+        <!-- 05 -->
+        <a href="../project_5/index.html" class="mega-menu-item group flex items-start gap-6">
+          <div class="mega-thumb w-[120px] h-[120px] bg-[#e2ddd5]/50 rounded-[12px] shrink-0 overflow-hidden transition-all duration-500">
+            <img src="../project_1/image/megamenu image-05-opt.webp" alt="Reward Redesign" class="w-full h-full object-cover">
+          </div>
+          <div class="pt-2">
+            <span class="block font-plex text-[11px] text-black/30 mb-2">05</span>
+            <h4 class="font-instrument text-[22px] leading-[1.2] text-[#1f2937] group-hover:text-black transition-colors">Reward Redemption<br>Flow Redesign</h4>
+          </div>
+        </a>
+        <!-- 06 -->
+        <a href="../project_6/index.html" class="mega-menu-item group flex items-start gap-6">
+          <div class="mega-thumb w-[120px] h-[120px] bg-[#e2ddd5]/50 rounded-[12px] shrink-0 overflow-hidden transition-all duration-500">
+            <img src="../project_1/image/megamenu image-06-opt.webp" alt="Virtual Bank Redesign" class="w-full h-full object-cover">
+          </div>
+          <div class="pt-2">
+            <span class="block font-plex text-[11px] text-black/30 mb-2">06</span>
+            <h4 class="font-instrument text-[22px] leading-[1.2] text-[#1f2937] group-hover:text-black transition-colors">Virtual Bank Page<br>Redesign</h4>
+          </div>
+        </a>
+        <!-- 07 -->
+        <a href="../project_7/index.html" class="mega-menu-item group flex items-start gap-6">
+          <div class="mega-thumb w-[120px] h-[120px] bg-[#e2ddd5]/50 rounded-[12px] shrink-0 overflow-hidden transition-all duration-500">
+            <img src="../project_1/image/megamenu image-07-opt.webp" alt="Travel Funnel" class="w-full h-full object-cover">
+          </div>
+          <div class="pt-2">
+            <span class="block font-plex text-[11px] text-black/30 mb-2">07</span>
+            <h4 class="font-instrument text-[22px] leading-[1.2] text-[#1f2937] group-hover:text-black transition-colors">Travel Insurance<br>Funnel & Brand Storytelling</h4>
+          </div>
+        </a>
+        <!-- 08 -->
+        <a href="../project_8/index.html" class="mega-menu-item group flex items-start gap-6">
+          <div class="mega-thumb w-[120px] h-[120px] bg-[#e2ddd5]/50 rounded-[12px] shrink-0 overflow-hidden transition-all duration-500">
+            <img src="../project_1/image/megamenu image-08-opt.webp" alt="COVID Insurance" class="w-full h-full object-cover">
+          </div>
+          <div class="pt-2">
+            <span class="block font-plex text-[11px] text-black/30 mb-2">08</span>
+            <h4 class="font-instrument text-[22px] leading-[1.2] text-[#1f2937] group-hover:text-black transition-colors">COVID-19 Travel Insurance<br>Comparison Page</h4>
+          </div>
+        </a>
+        <!-- 09 -->
+        <a href="../project_9/index.html" class="mega-menu-item group flex items-start gap-6">
+          <div class="mega-thumb w-[120px] h-[120px] bg-[#e2ddd5]/50 rounded-[12px] shrink-0 overflow-hidden transition-all duration-500">
+            <img src="../project_1/image/megamenu image-09-opt.webp" alt="Car Insurance Flow" class="w-full h-full object-cover">
+          </div>
+          <div class="pt-2">
+            <span class="block font-plex text-[11px] text-black/30 mb-2">09</span>
+            <h4 class="font-instrument text-[22px] leading-[1.2] text-[#1f2937] group-hover:text-black transition-colors">Multi-Step Car Insurance<br>Checkout Flow</h4>
+          </div>
+        </a>
+      </div>
+
+      <div class="mt-24 pt-12 border-t border-black/10 flex justify-center">
+        <button id="closeMegaMenu" class="flex items-center gap-3 font-plex text-[11px] tracking-[3px] uppercase text-black/60 hover:text-black transition-all">
+          Close Menu
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 7.5L6 4L9.5 7.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Breadcrumb -->
+  <div class="fixed top-24 left-0 right-0 z-40 bg-[rgba(233,229,223,0.95)] border-b border-black/5 h-[42px]">
+    <div class="max-w-[1164px] mx-auto px-6 lg:px-0 h-full flex items-center pl-12">
+      <div class="flex items-center gap-4">
+        <a href="../homepage/index.html"
+          class="flex items-center gap-2 font-plex text-[11px] tracking-[2px] uppercase text-black/60 hover:text-black transition-colors">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="opacity-60">
+            <path d="M8.5 10.5L5 7L8.5 3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          Back
+        </a>
+        <span class="font-plex text-[11px] tracking-[1px] text-black/30">/</span>
+        <span class="font-plex text-[11px] tracking-[1px] text-black/50">Resume</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Content -->
+  <div class="pt-[166px] pb-32">
+    <div class="max-w-[1164px] mx-auto px-6 lg:px-0">
+      <div class="flex gap-24">
+
+        <!-- SIDEBAR -->
+        <aside class="w-[324px] shrink-0 sticky top-[166px] self-start hidden lg:block">
+          <!-- Name + Title -->
+          <div class="mb-16">
+            <h1 class="font-serif text-[60px] leading-[1.1] tracking-[-1.5px] text-[#1f2937] mb-4">Michael Fan<br />Chun
+              Ho</h1>
+            <p class="font-sans text-[18px] text-[#6b7280] tracking-[-0.44px]">Senior UX/UI Designer</p>
+          </div>
+
+          <!-- Contact -->
+          <div class="mb-16 flex flex-col gap-3">
+            <a href="mailto:fanchunho.jobs@gmail.com"
+              class="flex items-center gap-[10px] font-plex text-[14px] text-[#1f2937] hover:text-black transition-colors">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="shrink-0 opacity-70">
+                <path d="M2 4l6 4.5L14 4M2 4h12v8.5H2V4z" stroke="currentColor" stroke-width="1.2"
+                  stroke-linejoin="round" />
+              </svg>
+              fanchunho.jobs@gmail.com
+            </a>
+            <a href="https://www.linkedin.com/in/michael-fan-chun-ho-a910a9325/" target="_blank"
+              class="flex items-center gap-[10px] font-plex text-[14px] text-[#1f2937] hover:text-black transition-colors">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="shrink-0 opacity-70">
+                <rect x="1.5" y="1.5" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.2" />
+                <path d="M4 6.5v5M4 4.5v.5M7 11.5V8.75C7 7.784 7.784 7 8.75 7c.966 0 1.75.784 1.75 1.75v2.75"
+                  stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+              </svg>
+              LinkedIn Profile
+            </a>
+            <a href="../homepage/index.html"
+              class="flex items-center gap-[10px] font-plex text-[14px] text-[#1f2937] hover:text-black transition-colors">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="shrink-0 opacity-70">
+                <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2" />
+                <path d="M2 8h12M8 2c-1.5 2-2.5 3.8-2.5 6s1 4 2.5 6M8 2c1.5 2 2.5 3.8 2.5 6s-1 4-2.5 6"
+                  stroke="currentColor" stroke-width="1.2" />
+              </svg>
+              View Portfolio
+            </a>
+            <a href="https://wa.me/85266262881" target="_blank"
+              class="flex items-center gap-[10px] font-plex text-[14px] text-[#1f2937] hover:text-black transition-colors">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="shrink-0 opacity-70">
+                <path d="M2.5 13.5l.93-3.4A5.5 5.5 0 1 1 5.4 12.5l-2.9 1z" stroke="currentColor" stroke-width="1.2"
+                  stroke-linejoin="round" />
+              </svg>
+              WhatsApp: +852 66262881
+            </a>
+          </div>
+
+          <!-- Technical Stack -->
+          <div class="mb-10">
+            <p class="font-plex text-[12px] text-[#6b7280] tracking-[1.2px] uppercase mb-6">Technical Stack</p>
+            <div class="flex flex-col gap-8">
+
+              <div>
+                <p class="font-sans font-medium text-[14px] text-[#1f2937] mb-3">UX Research</p>
+                <div class="flex flex-wrap gap-2">
+                  <span class="tag">Google Analytics</span>
+                  <span class="tag">Similarweb</span>
+                  <span class="tag">FullStory</span>
+                  <span class="tag">Hotjar</span>
+                  <span class="tag">Maze</span>
+                  <span class="tag">Miro</span>
+                  <span class="tag">FigJam</span>
+                </div>
+              </div>
+
+              <div>
+                <p class="font-sans font-medium text-[14px] text-[#1f2937] mb-3">Prototyping &amp; UI</p>
+                <div class="flex flex-wrap gap-2">
+                  <span class="tag">Figma</span>
+                  <span class="tag">Adobe XD</span>
+                  <span class="tag">Photoshop</span>
+                  <span class="tag">Illustrator</span>
+                  <span class="tag">InDesign</span>
+                  <span class="tag">Sketch</span>
+                  <span class="tag">Zeplin</span>
+                </div>
+              </div>
+
+              <div>
+                <p class="font-sans font-medium text-[14px] text-[#1f2937] mb-3">Front-End</p>
+                <div class="flex flex-wrap gap-2">
+                  <span class="tag">HubSpot</span>
+                  <span class="tag">HTML</span>
+                  <span class="tag">CSS</span>
+                  <span class="tag">JavaScript</span>
+                </div>
+              </div>
+
+              <div>
+                <p class="font-sans font-medium text-[14px] text-[#1f2937] mb-3">3D Design</p>
+                <div class="flex flex-wrap gap-2">
+                  <span class="tag">Spline</span>
+                  <span class="tag">Cinema 4D</span>
+                  <span class="tag">WebGL</span>
+                </div>
+              </div>
+
+              <div>
+                <p class="font-sans font-medium text-[14px] text-[#1f2937] mb-3">Workflow</p>
+                <div class="flex flex-wrap gap-2">
+                  <span class="tag">Agile Teamwork</span>
+                  <span class="tag">Jira</span>
+                  <span class="tag">Confluence</span>
+                  <span class="tag">Trello</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Education -->
+          <div class="mb-10">
+            <p class="font-plex text-[12px] text-[#6b7280] tracking-[1.2px] uppercase mb-6">Education</p>
+            <div class="flex flex-col gap-8">
+
+              <div>
+                <p class="font-plex text-[12px] text-[#6b7280] mb-2">2016 — 2018</p>
+                <p class="font-sans font-medium text-[16px] text-[#1f2937] mb-1 leading-snug">BA (Hons) in Design ·
+                  Interaction Design</p>
+                <p class="font-sans text-[14px] text-[#6b7280] mb-2 tracking-[-0.15px]">The Hong Kong Polytechnic
+                  University</p>
+                <p class="font-sans text-[14px] text-[rgba(31,41,55,0.8)] leading-[1.625] tracking-[-0.15px]">Explored
+                  human-centered design, UX research, prototyping, coding, and storytelling to craft user-friendly and
+                  meaningful digital experiences.</p>
+              </div>
+
+              <div>
+                <p class="font-plex text-[12px] text-[#6b7280] mb-2">2011 — 2014</p>
+                <p class="font-sans font-medium text-[16px] text-[#1f2937] mb-1 leading-snug">Higher Diploma in Visual
+                  Communication</p>
+                <p class="font-sans text-[14px] text-[#6b7280] mb-2 tracking-[-0.15px]">Hong Kong Design Institute
+                  (HKDI)</p>
+                <p class="font-sans text-[14px] text-[rgba(31,41,55,0.8)] leading-[1.625] tracking-[-0.15px]">Built
+                  skills in branding, typography, marketing, information design, digital publishing, and creative
+                  problem-solving.</p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Certifications -->
+          <div>
+            <p class="font-plex text-[12px] text-[#6b7280] tracking-[1.2px] uppercase mb-6">Certifications</p>
+            <a href="#"
+              class="flex items-center justify-between px-4 py-4 border border-black/15 hover:border-black/30 transition-colors group">
+              <span class="font-sans font-medium text-[14px] text-[#1f2937]">Google Analytics Certification</span>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                class="opacity-40 group-hover:opacity-70 transition-opacity shrink-0">
+                <path d="M11 5H5m6 0v6M5 11l6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+              </svg>
+            </a>
+          </div>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 min-w-0 max-w-[744px]">
+
+          <!-- Mobile name header -->
+          <div class="lg:hidden mb-12">
+            <h1 class="font-serif text-[42px] leading-[1.1] text-[#1f2937] mb-2">Michael Fan Chun Ho</h1>
+            <p class="font-sans text-[16px] text-[#6b7280]">Senior UX/UI Designer</p>
+          </div>
+
+          <!-- Professional Experience -->
+          <section class="mb-24">
+            <p class="font-plex text-[12px] text-[#6b7280] tracking-[1.2px] uppercase mb-10">Professional Experience</p>
+
+            <!-- Entry 1: Senior UX Designer -->
+            <article class="mb-0">
+              <div class="flex items-start justify-between mb-8">
+                <div>
+                  <h3 class="font-serif text-[36px] leading-[1.1] text-[#1f2937] mb-2">Senior UX Designer</h3>
+                  <p class="font-sans text-[18px] text-[#6b7280] tracking-[-0.44px]">MoneyHero Group</p>
+                </div>
+                <span class="font-plex text-[12px] text-[#6b7280] shrink-0 mt-2">2022 — 2024</span>
+              </div>
+
+              <div class="mb-6">
+                <div class="expand-text" id="exp1text">
+                  <p class="font-sans text-[20px] leading-[32px] text-[rgba(31,41,55,0.8)] tracking-[-0.5px]">Promoted
+                    to Senior UX/UI Designer after driving the successful design and implementation of multi-product
+                    campaign pages across regional markets. Collaborated with commercial, marketing, and product teams
+                    in MoneyHero (Hong Kong), SingSaver (Singapore), MoneyMax (The Philippines), and Money101 (Taiwan)
+                    to unify campaign workflows and visual standards. Contributed to launching a scalable design system
+                    that enhanced UI/UX consistency across MoneyHero, SingSaver, MoneyMax, and Money101, reducing
+                    production time from 2 weeks to 4 days and supporting faster go-to-market execution under
+                    high-pressure timelines.</p>
+                </div>
+                <button
+                  class="read-more-btn font-plex text-[11px] text-[#6b7280] tracking-[1.1px] uppercase mt-3 hover:text-black transition-colors"
+                  data-target="exp1text">+ Read more</button>
+              </div>
+
+              <ul class="flex flex-col gap-6 pt-2">
+                <li class="flex gap-[22px]">
+                  <span class="w-[6px] h-[6px] rounded-full bg-black/20 mt-[11px] shrink-0"></span>
+                  <p class="font-sans text-[18px] leading-[29.25px] text-[rgba(31,41,55,0.9)] tracking-[-0.44px]">
+                    Conducted extensive user research through interviews and surveys to understand the financial needs
+                    of Hong Kong users.</p>
+                </li>
+                <li class="flex gap-[22px]">
+                  <span class="w-[6px] h-[6px] rounded-full bg-black/20 mt-[11px] shrink-0"></span>
+                  <p class="font-sans text-[18px] leading-[29.25px] text-[rgba(31,41,55,0.9)] tracking-[-0.44px]">
+                    Analyzed findings and translated them into actionable insights, enhancing user satisfaction on
+                    product results pages for comparison and application.</p>
+                </li>
+                <li class="flex gap-[22px]">
+                  <span class="w-[6px] h-[6px] rounded-full bg-black/20 mt-[11px] shrink-0"></span>
+                  <p class="font-sans text-[18px] leading-[29.25px] text-[rgba(31,41,55,0.9)] tracking-[-0.44px]">
+                    Collaborated with cross-functional teams, including marketing, product managers, and tech engineers,
+                    to manage the user experience from concept to launch while aligning with business goals in an agile
+                    workflow.</p>
+                </li>
+                <li class="flex gap-[22px]">
+                  <span class="w-[6px] h-[6px] rounded-full bg-black/20 mt-[11px] shrink-0"></span>
+                  <p class="font-sans text-[18px] leading-[29.25px] text-[rgba(31,41,55,0.9)] tracking-[-0.44px]">
+                    Gathered ideas and insights using FigJam during focus groups; developed high-fidelity prototypes and
+                    wireframes with Figma.</p>
+                </li>
+                <li class="flex gap-[22px]">
+                  <span class="w-[6px] h-[6px] rounded-full bg-black/20 mt-[11px] shrink-0"></span>
+                  <p class="font-sans text-[18px] leading-[29.25px] text-[rgba(31,41,55,0.9)] tracking-[-0.44px]">
+                    Ensured accessibility best practices to improve usability for users with disabilities.</p>
+                </li>
+                <li class="flex gap-[22px]">
+                  <span class="w-[6px] h-[6px] rounded-full bg-black/20 mt-[11px] shrink-0"></span>
+                  <p class="font-sans text-[18px] leading-[29.25px] text-[rgba(31,41,55,0.9)] tracking-[-0.44px]">
+                    Contributed to a variety of projects, including credit cards, personal loans, insurance and campaign
+                    pages, while enhancing my front-end development skills in HubSpot and conducting UX research.</p>
+                </li>
+              </ul>
+            </article>
+
+            <!-- Entry 2: UX Designer -->
+            <article class="border-t border-black/15 mt-16 pt-16">
+              <div class="flex items-start justify-between mb-8">
+                <div>
+                  <h3 class="font-serif text-[36px] leading-[1.1] text-[#1f2937] mb-2">UX Designer</h3>
+                  <p class="font-sans text-[18px] text-[#6b7280] tracking-[-0.44px]">MoneyHero Group</p>
+                </div>
+                <span class="font-plex text-[12px] text-[#6b7280] shrink-0 mt-2">2020 – 2022</span>
+              </div>
+
+              <div class="mb-6">
+                <div class="expand-text" id="exp2text">
+                  <p class="font-sans text-[20px] leading-[32px] text-[rgba(31,41,55,0.8)] tracking-[-0.5px]">Promoted
+                    to UX/UI Designer after leading critical initiatives including kickstarting the MoneyHero app
+                    project and designing the end-to-end eKYC user experience. Collaborated closely with product and
+                    compliance teams to craft a seamless, secure, and user-friendly onboarding flow that supported
+                    regulatory needs while reducing drop-offs. Also played a key role in launching cross-country
+                    campaign pages and co-developing a regional design system for MoneyHero (HK), SingSaver (SG),
+                    MoneyMax (PH), and Money101 (TW), improving design consistency and cutting campaign page production
+                    time from 2 weeks to 4 days.</p>
+                </div>
+                <button
+                  class="read-more-btn font-plex text-[11px] text-[#6b7280] tracking-[1.1px] uppercase mt-3 hover:text-black transition-colors"
+                  data-target="exp2text">+ Read more</button>
+              </div>
+
+              <ul class="flex flex-col gap-6 pt-2">
+                <li class="flex gap-[22px]">
+                  <span class="w-[6px] h-[6px] rounded-full bg-black/20 mt-[11px] shrink-0"></span>
+                  <p class="font-sans text-[18px] leading-[29.25px] text-[rgba(31,41,55,0.9)] tracking-[-0.44px]">
+                    Enabled the local team to create campaign pages supporting branding and short-term business goals.
+                  </p>
+                </li>
+                <li class="flex gap-[22px]">
+                  <span class="w-[6px] h-[6px] rounded-full bg-black/20 mt-[11px] shrink-0"></span>
+                  <p class="font-sans text-[18px] leading-[29.25px] text-[rgba(31,41,55,0.9)] tracking-[-0.44px]">
+                    Revamped the MoneyHero brand image with a refreshed UI, improving brand recognition and alignment
+                    with design trends.</p>
+                </li>
+                <li class="flex gap-[22px]">
+                  <span class="w-[6px] h-[6px] rounded-full bg-black/20 mt-[11px] shrink-0"></span>
+                  <p class="font-sans text-[18px] leading-[29.25px] text-[rgba(31,41,55,0.9)] tracking-[-0.44px]">
+                    Assisted in launching the first phase of the MoneyHero app, facilitating user onboarding.</p>
+                </li>
+              </ul>
+            </article>
+
+            <!-- Entry 3: Junior UX Designer -->
+            <article class="border-t border-black/15 mt-16 pt-16">
+              <div class="flex items-start justify-between mb-8">
+                <div>
+                  <h3 class="font-serif text-[36px] leading-[1.1] text-[#1f2937] mb-2">Junior UX Designer</h3>
+                  <p class="font-sans text-[18px] text-[#6b7280] tracking-[-0.44px]">MoneyHero</p>
+                </div>
+                <span class="font-plex text-[12px] text-[#6b7280] shrink-0 mt-2">2018 – 2020</span>
+              </div>
+
+              <div class="mb-6">
+                <div class="expand-text" id="exp3text">
+                  <p class="font-sans text-[20px] leading-[32px] text-[rgba(31,41,55,0.8)] tracking-[-0.5px]">
+                    Contributed to streamlining the design workflow and enhancing user experiences by assisting the
+                    Design Manager in implementing user testing and developing new layouts for insurance products.
+                    Collaborated closely with the Design Manager to optimize the travel insurance funnel and create
+                    testing pages for the Voluntary Health Insurance Scheme (VHIS), resulting in a more intuitive and
+                    engaging user experience.</p>
+                </div>
+                <button
+                  class="read-more-btn font-plex text-[11px] text-[#6b7280] tracking-[1.1px] uppercase mt-3 hover:text-black transition-colors"
+                  data-target="exp3text">+ Read more</button>
+              </div>
+
+              <ul class="flex flex-col gap-6 pt-2">
+                <li class="flex gap-[22px]">
+                  <span class="w-[6px] h-[6px] rounded-full bg-black/20 mt-[11px] shrink-0"></span>
+                  <p class="font-sans text-[18px] leading-[29.25px] text-[rgba(31,41,55,0.9)] tracking-[-0.44px]">
+                    Assisted in user acceptance testing (UAT) for the travel insurance funnel, gathering data to refine
+                    user interactions.</p>
+                </li>
+                <li class="flex gap-[22px]">
+                  <span class="w-[6px] h-[6px] rounded-full bg-black/20 mt-[11px] shrink-0"></span>
+                  <p class="font-sans text-[18px] leading-[29.25px] text-[rgba(31,41,55,0.9)] tracking-[-0.44px]">
+                    Developed a vertical comparison table and grid layout for insurance products, improving the product
+                    discovery process.</p>
+                </li>
+                <li class="flex gap-[22px]">
+                  <span class="w-[6px] h-[6px] rounded-full bg-black/20 mt-[11px] shrink-0"></span>
+                  <p class="font-sans text-[18px] leading-[29.25px] text-[rgba(31,41,55,0.9)] tracking-[-0.44px]">
+                    Improved the overall user flow and branding style, enhancing user engagement and satisfaction.</p>
+                </li>
+                <li class="flex gap-[22px]">
+                  <span class="w-[6px] h-[6px] rounded-full bg-black/20 mt-[11px] shrink-0"></span>
+                  <p class="font-sans text-[18px] leading-[29.25px] text-[rgba(31,41,55,0.9)] tracking-[-0.44px]">
+                    Streamlined design processes and boosted user interaction through informative pop-up cards.</p>
+                </li>
+              </ul>
+            </article>
+          </section>
+
+          <!-- Recommendations -->
+          <section class="border-t border-black/15 pt-16">
+            <p class="font-plex text-[12px] text-[#6b7280] tracking-[1.2px] uppercase mb-12">Recommendations</p>
+
+            <!-- Hugo Mar -->
+            <article class="mb-12">
+              <div class="mb-6">
+                <h3 class="font-serif text-[30px] leading-[1.2] text-[#1f2937] mb-1">Hugo Mar</h3>
+                <p class="font-sans text-[16px] text-[#6b7280] tracking-[-0.31px]">VP of Product, MoneyHero Group</p>
+              </div>
+              <div class="border-l-2 border-black/15 pl-5">
+                <div class="expand-text" id="rec1text">
+                  <p class="font-sans text-[18px] leading-[29.25px] text-[rgba(31,41,55,0.9)]">"Michael is an
+                    exceptional UX/UI designer with strong collaboration skills, creative problem-solving abilities, and
+                    deep empathy for users. He consistently delivers high-quality, user-centered solutions and takes
+                    initiative in optimizing workflows. His calm demeanor and positive attitude make him a valuable team
+                    member who enhances group performance and morale. Michael's contributions have significantly
+                    improved product experiences and team dynamics. He not only brings design expertise but also strong
+                    communication and leadership, especially when coordinating across regions and departments. I highly
+                    recommend him for any role requiring thoughtful, strategic design."</p>
+                </div>
+                <button
+                  class="read-more-btn font-plex text-[11px] text-[#6b7280] tracking-[1.1px] uppercase mt-3 hover:text-black transition-colors italic"
+                  data-target="rec1text">+ Read more</button>
+                <a href="#"
+                  class="flex items-center gap-2 mt-4 font-plex text-[11px] text-[#1f2937] tracking-[1.1px] uppercase hover:opacity-60 transition-opacity">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="opacity-50">
+                    <path d="M11 3H3m8 0v8M3 11l8-8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+                  </svg>
+                  View Original Letter
+                </a>
+              </div>
+            </article>
+
+            <!-- Sin Wai Ho, Ric -->
+            <article class="border-t border-black/15 pt-12">
+              <div class="mb-6">
+                <h3 class="font-serif text-[30px] leading-[1.2] text-[#1f2937] mb-1">Sin Wai Ho, Ric</h3>
+                <p class="font-sans text-[16px] text-[#6b7280] tracking-[-0.31px]">Regional Creative Director, MoneyHero
+                  Group</p>
+              </div>
+              <div class="border-l-2 border-black/15 pl-5">
+                <div class="expand-text" id="rec2text">
+                  <p class="font-sans text-[18px] leading-[29.25px] text-[rgba(31,41,55,0.9)]">"I highly recommend
+                    Michael Fan, who served as a Senior UX/UI Designer at MoneyHero from 2018 to 2024. Michael played a
+                    key role in revamping major pages — like the homepage and result page — leading to a 50%+ uplift in
+                    conversion rate. He managed campaigns across HK, SG, TW, and PH markets, and effectively aligned
+                    brand design between product and marketing teams. Michael is proactive, collaborative, and
+                    consistently brings positivity and excellence to his work. His independence, drive for growth, and
+                    strong communication made him a trusted teammate. He will be a valuable asset to any organization
+                    fortunate enough to have him."</p>
+                </div>
+                <button
+                  class="read-more-btn font-plex text-[11px] text-[#6b7280] tracking-[1.1px] uppercase mt-3 hover:text-black transition-colors italic"
+                  data-target="rec2text">+ Read more</button>
+                <a href="#"
+                  class="flex items-center gap-2 mt-4 font-plex text-[11px] text-[#1f2937] tracking-[1.1px] uppercase hover:opacity-60 transition-opacity">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="opacity-50">
+                    <path d="M11 3H3m8 0v8M3 11l8-8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+                  </svg>
+                  View Original Letter
+                </a>
+              </div>
+            </article>
+
+          </section>
+        </main>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Footer -->
+  <footer id="contact" class="border-t border-[#D8D4CC] mt-12">
+    <div class="max-w-[1164px] mx-auto px-6 lg:px-0 py-24 md:py-32 flex flex-col items-center text-center gap-10">
+      <div class="flex flex-col gap-6">
+        <h2 class="font-serif text-[32px] md:text-[42px] text-[#0a0a0a] leading-tight max-w-[640px]">Let's build
+          meaningful product experiences together.</h2>
+        <p class="font-sans text-[17px] text-[rgba(10,10,10,0.6)] max-w-[580px] leading-relaxed">Currently open to
+          Senior Product Design roles in FinTech and InsurTech where I can drive customer acquisition and shape design
+          culture.</p>
+      </div>
+      <div class="flex flex-wrap gap-4 justify-center">
+        <a href="https://wa.me/85266262881"
+          class="flex items-center gap-3 bg-[#0a0a0a] text-white font-plex text-[10px] tracking-[3.2px] uppercase px-8 py-4 rounded-full hover:bg-black transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />
+          </svg>
+          WhatsApp Me
+        </a>
+        <a href="mailto:fanchunho.jobs@gmail.com"
+          class="flex items-center gap-3 border border-[#0a0a0a] text-[#0a0a0a] font-plex text-[10px] tracking-[3.2px] uppercase px-8 py-4 rounded-full hover:bg-[#0a0a0a] hover:text-white transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+          </svg>
+          Email Me
+        </a>
+        <a href="https://www.linkedin.com/in/michael-fan-chun-ho-a910a9325/" target="_blank"
+          class="cta-button flex items-center justify-center w-full sm:w-auto gap-2 border border-[#111111] text-[#111111] bg-transparent text-[10px] tracking-[0.2em] uppercase font-bold px-8 py-4 rounded-full hover:bg-black/5 transition-colors"><svg
+            width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <g opacity="0.8">
+              <path
+                d="M10.6667 5.33301C11.7276 5.33301 12.745 5.75444 13.4952 6.50458C14.2453 7.25473 14.6667 8.27214 14.6667 9.33301V13.9997H12.0001V9.33301C12.0001 8.97939 11.8596 8.64025 11.6096 8.3902C11.3595 8.14015 11.0204 7.99967 10.6667 7.99967C10.3131 7.99967 9.97399 8.14015 9.72394 8.3902C9.47389 8.64025 9.33341 8.97939 9.33341 9.33301V13.9997H6.66675V9.33301C6.66675 8.27214 7.08818 7.25473 7.83832 6.50458C8.58847 5.75444 9.60588 5.33301 10.6667 5.33301Z"
+                stroke="#0A0A0A" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M4 6H1.33334V13.9997H4V6Z" stroke="#0A0A0A" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path
+                d="M2.66667 4C3.40305 4 4 3.40305 4 2.66667C4 1.93029 3.40305 1.33334 2.66667 1.33334C1.93029 1.33334 1.33334 1.93029 1.33334 2.66667C1.33334 3.40305 1.93029 4 2.66667 4Z"
+                stroke="#0A0A0A" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+          </svg> LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Copyright Footer -->
+  <footer class="border-t border-black/10 flex flex-col gap-2 items-center py-6">
+    <p class="font-plex text-[9px] text-black/40 tracking-[1.8px] uppercase">© 2025 Michael Fan. All rights reserved.
+    </p>
+    <p class="font-plex text-[9px] text-black/40 tracking-[1.8px] uppercase">Senior UX/UI Designer</p>
+  </footer>
+
+  <script>
+    // Navbar border on scroll
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.style.borderBottomColor = window.scrollY > 10 ? 'rgba(216,212,204,0.8)' : 'transparent';
+    });
+
+    // Read more toggle
+    document.querySelectorAll('.read-more-btn').forEach(btn => {
+      const targetId = btn.getAttribute('data-target');
+      const target = document.getElementById(targetId);
+      if (!target) return;
+
+      // Check if content needs truncation
+      const checkOverflow = () => {
+        if (target.scrollHeight <= 100) {
+          btn.style.display = 'none';
+        }
+      };
+      checkOverflow();
+
+      btn.addEventListener('click', () => {
+        const isExpanded = target.classList.contains('expanded');
+        target.classList.toggle('expanded');
+        btn.textContent = isExpanded ? '+ Read more' : '− Read less';
+      });
+    });
+
+    // Mega Menu Logic
+    const workToggle = document.getElementById('workToggle');
+    const megaMenu = document.getElementById('megaMenu');
+    const closeMegaMenu = document.getElementById('closeMegaMenu');
+    const body = document.body;
+
+    workToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      const isActive = megaMenu.classList.contains('active');
+      if (!isActive) {
+        megaMenu.classList.remove('invisible');
+        setTimeout(() => {
+          megaMenu.classList.add('active');
+          body.style.overflow = 'hidden';
+          workToggle.classList.add('text-black');
+          workToggle.classList.remove('text-black/60');
+        }, 10);
+      } else {
+        closeMenu();
+      }
+    });
+
+    function closeMenu() {
+      megaMenu.classList.remove('active');
+      body.style.overflow = '';
+      workToggle.classList.remove('text-black');
+      workToggle.classList.add('text-black/60');
+      setTimeout(() => {
+        if (!megaMenu.classList.contains('active')) {
+          megaMenu.classList.add('invisible');
+        }
+      }, 500);
+    }
+
+    closeMegaMenu.addEventListener('click', closeMenu);
+
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && megaMenu.classList.contains('active')) {
+        closeMenu();
+      }
+    });
+  </script>
+</body>
+
+</html>

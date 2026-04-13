@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manulife Lead Generation Optimization - Michael Fan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'], instrument: ['Instrument Serif', 'serif'], plex: ['IBM Plex Mono', 'monospace'] },
+                    keyframes: { shimmer: { '100%': { transform: 'translateX(100%)' } } },
+                    animation: { shimmer: 'shimmer 1.5s infinite' }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none
+        }
+
+        html {
+            scroll-padding-top: 120px
+        }
+
+        .sidebar-active {
+            color: #111111 !important;
+            opacity: 1 !important
+        }
+
+        .sidebar-active-num {
+            color: #111111 !important
+        }
+
+        @keyframes loadingBar {
+            0% {
+                width: 0%
+            }
+
+            100% {
+                width: 100%
+            }
+        }
+
+        .dot-active {
+            width: 64px !important;
+            height: 16px !important;
+            background-color: rgba(31, 41, 55, 0.2) !important
+        }
+
+        .dot-active::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: #1f2937;
+            animation: loadingBar 3s linear forwards;
+            border-radius: 9999px
+        }
+
+        .is-paused .dot-active::after {
+            animation-play-state: paused
+        }
+
+        .mobile-toc-active {
+            color: #111111 !important;
+            font-weight: 500
+        }
+
+        .mobile-toc-active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #111111
+        }
+
+        #mobileToc {
+            cursor: grab
+        }
+
+        #mobileToc:active {
+            cursor: grabbing
+        }
+
+        #mobileToc a {
+            user-select: none;
+            -webkit-user-drag: none
+        }
+
+        #workMenu {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+            transform: translateY(-10px);
+            pointer-events: none;
+            opacity: 0;
+            max-height: 85vh;
+            overflow-y: auto
+        }
+
+        #workMenu.is-open {
+            transform: translateY(0);
+            pointer-events: auto;
+            opacity: 1
+        }
+
+        #lightboxScrollArea {
+            cursor: grab;
+            user-select: none
+        }
+
+        #lightboxScrollArea.is-dragging {
+            cursor: grabbing
+        }
+
+        #lightboxImage {
+            display: block;
+            pointer-events: none;
+            transition: width 0.3s ease-in-out
+        }
+
+        .skeleton {
+            position: relative;
+            overflow: hidden;
+            background-color: #E5E2D9
+        }
+
+        .skeleton::after {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            transform: translateX(-100%);
+            background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.2) 20%, rgba(255, 255, 255, 0.5) 60%, rgba(255, 255, 255, 0));
+            animation: shimmer 2s infinite;
+            content: ''
+        }
+
+        /* Scoped Mobile CTA for Contact Section */
+        @media (max-width: 767px) {
+            .project-page .contact-section .cta-button {
+                width: 100% !important;
+                display: flex !important;
+                justify-content: center !important;
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="min-h-screen bg-[#EFECE5] text-[#111111] font-sans antialiased selection:bg-[#111111] selection:text-white overflow-x-hidden">
+
+    <div id="initialLoader"
+        class="fixed inset-0 z-[1000] bg-[#EFECE5] flex flex-col transition-opacity duration-700 pointer-events-none">
+        <div class="max-w-[1280px] w-full mx-auto px-6 md:px-12 py-6 md:py-8 flex items-center justify-between">
+            <div class="h-8 w-32 skeleton rounded-md"></div>
+            <div class="hidden md:flex gap-8 items-center">
+                <div class="h-3 w-12 skeleton rounded"></div>
+                <div class="h-10 w-32 skeleton rounded-lg"></div>
+            </div>
+        </div>
+        <div
+            class="max-w-[1280px] w-full mx-auto px-6 md:px-12 pt-12 flex flex-col md:flex-row gap-16 lg:gap-32 flex-1">
+            <div class="hidden md:block w-[220px] space-y-10">
+                <div class="h-2 w-20 skeleton rounded mb-10"></div>
+            </div>
+            <div class="flex-1 max-w-[880px] space-y-12">
+                <div class="space-y-6">
+                    <div class="h-2 w-24 skeleton rounded"></div>
+                    <div class="h-14 w-full skeleton rounded-lg"></div>
+                    <div class="h-[400px] w-full skeleton rounded-[24px]"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header
+        class="sticky top-0 z-[100] w-full bg-[#EFECE5]/95 backdrop-blur-sm border-b border-transparent transition-colors"
+        id="mainHeader">
+        <div
+            class="max-w-[1280px] mx-auto px-6 md:px-12 py-6 md:py-8 flex items-center justify-between relative z-[101]">
+            <a href="../homepage/index.html"
+                class="font-instrument text-[28px] md:text-[32px] leading-none cursor-pointer hover:opacity-80 transition-opacity">Michael.
+                Fan</a>
+            <div class="hidden md:flex items-center gap-[40px]">
+                <nav class="flex items-center gap-[32px]">
+                    <button id="workToggle"
+                        class="font-plex text-[10px] tracking-[2px] text-[#666666] uppercase hover:text-[#111111] transition-colors flex items-center gap-1 group">Work
+                        <i data-lucide="chevron-down" id="workChevron"
+                            class="w-3 h-3 transition-transform duration-300"></i></button>
+                    <a href="#contact"
+                        class="font-plex text-[10px] tracking-[2px] text-[#666666] uppercase hover:text-[#111111] transition-colors">Contact</a>
+                </nav>
+                <a href="../resume/index.html"
+                    class="flex items-center justify-center bg-[#0a0a0a] text-white font-plex font-medium text-[12px] leading-[18px] tracking-[2.4px] uppercase px-[32px] py-[12px] rounded-[10px] hover:bg-black/80 transition-all duration-300">View
+                    Resume</a>
+            </div>
+            <div class="md:hidden flex items-center">
+                <button id="mobileMenuOpenBtn" class="text-[#111111] hover:opacity-70 transition-opacity p-2 -mr-2"
+                    aria-label="Open Mobile Menu"><i data-lucide="menu" class="w-6 h-6"></i></button>
+            </div>
+        </div>
+        <!-- Megamenu -->
+        <div id="workMenu" class="absolute top-full left-0 w-full bg-[#EFECE5] border-b border-[#D8D4CC] shadow-2xl">
+            <div class="max-w-[1280px] mx-auto px-6 md:px-12 pt-8 pb-12">
+                <div
+                    class="font-plex text-[9px] tracking-[0.2em] text-[#A09D96] uppercase mb-8 border-b border-[#D8D4CC] pb-4">
+                    Select a Case Study</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-6">
+                    <a href="../project_1/index.html"
+                        class="group flex gap-5 items-start p-6 hover:bg-[#EAE7E0] rounded-2xl transition-colors">
+                        <div class="w-20 h-20 shrink-0 rounded-xl bg-[#E8E6DF] overflow-hidden"><img
+                                src="../project_1/image/megamenu image-01-opt.webp" alt=""
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'"></div>
+                        <div class="flex flex-col pt-1"><span class="font-plex text-[9px] text-[#A09D96] mb-1">01</span>
+                            <h3
+                                class="font-serif text-[15px] leading-tight text-[#666666] group-hover:text-[#111111] transition-colors">
+                                Personal Loan Tactical Blog Redesign</h3>
+                        </div>
+                    </a>
+                    <a href="../project_2/index.html"
+                        class="group flex gap-5 items-start p-6 hover:bg-[#EAE7E0] rounded-2xl transition-colors">
+                        <div class="w-20 h-20 shrink-0 rounded-xl bg-[#E8E6DF] overflow-hidden"><img
+                                src="../project_1/image/megamenu image-02-opt.webp" alt=""
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'"></div>
+                        <div class="flex flex-col pt-1"><span class="font-plex text-[9px] text-[#A09D96] mb-1">02</span>
+                            <h3
+                                class="font-serif text-[15px] leading-tight text-[#666666] group-hover:text-[#111111] transition-colors">
+                                Manulife Lead Generation Optimization</h3>
+                        </div>
+                    </a>
+                    <a href="../project_3/index.html"
+                        class="group flex gap-5 items-start p-6 hover:bg-[#EAE7E0] rounded-2xl transition-colors">
+                        <div class="w-20 h-20 shrink-0 rounded-xl bg-[#E8E6DF] overflow-hidden"><img
+                                src="../project_1/image/megamenu image-03-opt.webp" alt=""
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'"></div>
+                        <div class="flex flex-col pt-1"><span class="font-plex text-[9px] text-[#A09D96] mb-1">03</span>
+                            <h3
+                                class="font-serif text-[15px] leading-tight text-[#666666] group-hover:text-[#111111] transition-colors">
+                                MoneyHero Result Page Revamp</h3>
+                        </div>
+                    </a>
+                    <a href="../project_4/index.html"
+                        class="group flex gap-5 items-start p-6 hover:bg-[#EAE7E0] rounded-2xl transition-colors">
+                        <div class="w-20 h-20 shrink-0 rounded-xl bg-[#E8E6DF] overflow-hidden"><img
+                                src="../project_1/image/megamenu image-04-opt.webp" alt=""
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'"></div>
+                        <div class="flex flex-col pt-1"><span class="font-plex text-[9px] text-[#A09D96] mb-1">04</span>
+                            <h3
+                                class="font-serif text-[15px] leading-tight text-[#666666] group-hover:text-[#111111] transition-colors">
+                                Campaign Page Optimization (Citi, HSBC & SC)</h3>
+                        </div>
+                    </a>
+                    <a href="../project_5/index.html"
+                        class="group flex gap-5 items-start p-6 hover:bg-[#EAE7E0] rounded-2xl transition-colors">
+                        <div class="w-20 h-20 shrink-0 rounded-xl bg-[#E8E6DF] overflow-hidden"><img
+                                src="../project_1/image/megamenu image-05-opt.webp" alt=""
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'"></div>
+                        <div class="flex flex-col pt-1"><span class="font-plex text-[9px] text-[#A09D96] mb-1">05</span>
+                            <h3
+                                class="font-serif text-[15px] leading-tight text-[#666666] group-hover:text-[#111111] transition-colors">
+                                Reward Redemption Flow Redesign</h3>
+                        </div>
+                    </a>
+                    <a href="../project_6/index.html"
+                        class="group flex gap-5 items-start p-6 hover:bg-[#EAE7E0] rounded-2xl transition-colors">
+                        <div class="w-20 h-20 shrink-0 rounded-xl bg-[#E8E6DF] overflow-hidden"><img
+                                src="../project_1/image/megamenu image-06-opt.webp" alt=""
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'"></div>
+                        <div class="flex flex-col pt-1"><span class="font-plex text-[9px] text-[#A09D96] mb-1">06</span>
+                            <h3
+                                class="font-serif text-[15px] leading-tight text-[#666666] group-hover:text-[#111111] transition-colors">
+                                Virtual Bank Page Redesign</h3>
+                        </div>
+                    </a>
+                    <a href="../project_7/index.html"
+                        class="group flex gap-5 items-start p-6 hover:bg-[#EAE7E0] rounded-2xl transition-colors">
+                        <div class="w-20 h-20 shrink-0 rounded-xl bg-[#E8E6DF] overflow-hidden"><img
+                                src="../project_1/image/megamenu image-07-opt.webp" alt=""
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'"></div>
+                        <div class="flex flex-col pt-1"><span class="font-plex text-[9px] text-[#A09D96] mb-1">07</span>
+                            <h3
+                                class="font-serif text-[15px] leading-tight text-[#666666] group-hover:text-[#111111] transition-colors">
+                                Travel Insurance Funnel & Brand Storytelling</h3>
+                        </div>
+                    </a>
+                    <a href="../project_8/index.html"
+                        class="group flex gap-5 items-start p-6 hover:bg-[#EAE7E0] rounded-2xl transition-colors">
+                        <div class="w-20 h-20 shrink-0 rounded-xl bg-[#E8E6DF] overflow-hidden"><img
+                                src="../project_1/image/megamenu image-08-opt.webp" alt=""
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'"></div>
+                        <div class="flex flex-col pt-1"><span class="font-plex text-[9px] text-[#A09D96] mb-1">08</span>
+                            <h3
+                                class="font-serif text-[15px] leading-tight text-[#666666] group-hover:text-[#111111] transition-colors">
+                                COVID-19 Travel Insurance Comparison Page</h3>
+                        </div>
+                    </a>
+                    <a href="../project_9/index.html"
+                        class="group flex gap-5 items-start p-6 hover:bg-[#EAE7E0] rounded-2xl transition-colors">
+                        <div class="w-20 h-20 shrink-0 rounded-xl bg-[#E8E6DF] overflow-hidden"><img
+                                src="../project_1/image/megamenu image-09-opt.webp" alt=""
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'"></div>
+                        <div class="flex flex-col pt-1"><span class="font-plex text-[9px] text-[#A09D96] mb-1">09</span>
+                            <h3
+                                class="font-serif text-[15px] leading-tight text-[#666666] group-hover:text-[#111111] transition-colors">
+                                Multi-Step Car Insurance Checkout Flow</h3>
+                        </div>
+                    </a>
+                </div>
+                <div class="flex justify-center mt-8 pt-8 border-t border-[#D8D4CC]/50">
+                    <button id="closeWorkMenuBtn"
+                        class="flex items-center gap-2 font-plex text-[10px] tracking-[2px] text-[#666666] uppercase hover:text-[#111111] transition-colors group">Close
+                        Menu <i data-lucide="chevron-up" class="w-4 h-4"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-[1280px] mx-auto px-6 md:px-12 pt-6 md:pt-8 w-full relative z-[50]">
+        <nav
+            class="flex items-center gap-3 font-plex text-[9px] tracking-[0.2em] text-[#888888] uppercase overflow-x-auto hide-scrollbar whitespace-nowrap">
+            <a href="../homepage/index.html" class="hover:text-[#111111] transition-colors shrink-0">Home</a>
+            <span class="text-[#D8D4CC] shrink-0">/</span>
+            <a href="../homepage/index.html" class="hover:text-[#111111] transition-colors shrink-0">Work</a>
+            <span class="text-[#D8D4CC] shrink-0">/</span>
+            <span class="text-[#111111] shrink-0">Manulife Lead Generation Optimization</span>
+        </nav>
+    </div>
+
+    <main class="max-w-[1280px] mx-auto px-6 md:px-12 pt-8 md:pt-10 pb-12 flex flex-col md:flex-row gap-16 lg:gap-32">
+        <aside class="hidden md:block w-[220px] shrink-0">
+            <div class="sticky top-[120px]">
+                <h4 class="font-plex text-[9px] tracking-[0.2em] text-[#888888] uppercase mb-10">Contents</h4>
+                <nav>
+                    <ul class="flex flex-col gap-6">
+                        <li><a href="#overview" class="flex gap-6 items-baseline sidebar-link"
+                                data-section="overview"><span
+                                    class="font-plex text-[#A09D96] text-[9px] tracking-[0.1em] transition-colors sidebar-num">01</span><span
+                                    class="text-[#888888] text-[15px] font-serif transition-all sidebar-text">Project
+                                    Overview</span></a></li>
+                        <li><a href="#problem" class="flex gap-6 items-baseline sidebar-link"
+                                data-section="problem"><span
+                                    class="font-plex text-[#A09D96] text-[9px] tracking-[0.1em] transition-colors sidebar-num">02</span><span
+                                    class="text-[#888888] text-[15px] font-serif transition-all sidebar-text">Problem</span></a>
+                        </li>
+                        <li><a href="#research" class="flex gap-6 items-baseline sidebar-link"
+                                data-section="research"><span
+                                    class="font-plex text-[#A09D96] text-[9px] tracking-[0.1em] transition-colors sidebar-num">03</span><span
+                                    class="text-[#888888] text-[15px] font-serif transition-all sidebar-text">Research
+                                    and Insights</span></a></li>
+                        <li><a href="#strategy" class="flex gap-6 items-baseline sidebar-link"
+                                data-section="strategy"><span
+                                    class="font-plex text-[#A09D96] text-[9px] tracking-[0.1em] transition-colors sidebar-num">04</span><span
+                                    class="text-[#888888] text-[15px] font-serif transition-all sidebar-text">Design
+                                    Strategy</span></a></li>
+                        <li><a href="#solution" class="flex gap-6 items-baseline sidebar-link"
+                                data-section="solution"><span
+                                    class="font-plex text-[#A09D96] text-[9px] tracking-[0.1em] transition-colors sidebar-num">05</span><span
+                                    class="text-[#888888] text-[15px] font-serif transition-all sidebar-text">Solution</span></a>
+                        </li>
+                        <li><a href="#impact" class="flex gap-6 items-baseline sidebar-link" data-section="impact"><span
+                                    class="font-plex text-[#A09D96] text-[9px] tracking-[0.1em] transition-colors sidebar-num">06</span><span
+                                    class="text-[#888888] text-[15px] font-serif transition-all sidebar-text">Impact</span></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <article class="flex-1 max-w-[880px] min-w-0">
+            <div class="mb-12 md:mb-24">
+                <div class="font-plex text-[9px] tracking-[0.2em] text-[#888888] uppercase mb-8">Case Study</div>
+                <h1 class="font-instrument text-[48px] md:text-[64px] leading-[1.05] text-[#111111] mb-12">Manulife Lead
+                    Generation Optimization</h1>
+                <div
+                    class="w-full bg-[#E8E6DF] rounded-[24px] overflow-hidden flex items-center justify-center shadow-sm min-h-[300px]">
+                    <img src="image/image_page_cover_01-opt.webp" alt="Manulife Lead Generation Optimization"
+                        class="w-full h-auto object-cover" onerror="this.style.display='none'">
+                </div>
+            </div>
+
+            <div id="mobileToc"
+                class="md:hidden sticky top-[76px] z-[90] bg-[#EFECE5]/95 backdrop-blur-sm border-y border-[#D8D4CC]/50 -mx-6 mb-12 w-[calc(100%+48px)] overflow-x-auto hide-scrollbar shadow-sm">
+                <nav>
+                    <ul class="flex items-center gap-4 w-max px-6">
+                        <li><a href="#overview"
+                                class="mobile-toc-link block py-4 px-2 text-[15px] font-serif text-[#888888] transition-colors relative"
+                                data-section="overview">Overview</a></li>
+                        <li><a href="#problem"
+                                class="mobile-toc-link block py-4 px-2 text-[15px] font-serif text-[#888888] transition-colors relative"
+                                data-section="problem">Problem</a></li>
+                        <li><a href="#research"
+                                class="mobile-toc-link block py-4 px-2 text-[15px] font-serif text-[#888888] transition-colors relative"
+                                data-section="research">Research</a></li>
+                        <li><a href="#strategy"
+                                class="mobile-toc-link block py-4 px-2 text-[15px] font-serif text-[#888888] transition-colors relative"
+                                data-section="strategy">Strategy</a></li>
+                        <li><a href="#solution"
+                                class="mobile-toc-link block py-4 px-2 text-[15px] font-serif text-[#888888] transition-colors relative"
+                                data-section="solution">Solution</a></li>
+                        <li><a href="#impact"
+                                class="mobile-toc-link block py-4 px-2 text-[15px] font-serif text-[#888888] transition-colors relative"
+                                data-section="impact">Impact</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- 01 Overview -->
+            <section id="overview" class="mb-32 section-target">
+                <h2 class="font-instrument text-[36px] md:text-[44px] text-[#111111] flex items-center gap-6 mb-12">
+                    <span
+                        class="font-plex text-[#A09D96] text-[12px] tracking-[0.1em] uppercase font-bold relative -top-1">01</span>Project
+                    Overview
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-12 gap-x-12 border-t border-[#D8D4CC] pt-12">
+                    <div>
+                        <div class="font-plex text-[9px] tracking-[0.2em] text-[#888888] uppercase mb-4">Project Type
+                        </div>
+                        <div class="font-serif text-[#111111] text-[16px] leading-relaxed">Application Funnel
+                            Optimization</div>
+                    </div>
+                    <div>
+                        <div class="font-plex text-[9px] tracking-[0.2em] text-[#888888] uppercase mb-4">Company</div>
+                        <div class="font-serif text-[#111111] text-[16px] leading-relaxed">SingSaver (MoneyHero Group)
+                        </div>
+                    </div>
+                    <div>
+                        <div class="font-plex text-[9px] tracking-[0.2em] text-[#888888] uppercase mb-4">Team</div>
+                        <div class="font-serif text-[#111111] text-[16px] leading-relaxed">Product Managers, Marketing
+                        </div>
+                    </div>
+                    <div>
+                        <div class="font-plex text-[9px] tracking-[0.2em] text-[#888888] uppercase mb-4">Timeline</div>
+                        <div class="font-serif text-[#111111] text-[16px] leading-relaxed">May – June 2024</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 02 Problem -->
+            <section id="problem" class="mb-32 section-target">
+                <h2 class="font-instrument text-[36px] md:text-[44px] text-[#111111] flex items-center gap-6 mb-12">
+                    <span
+                        class="font-plex text-[#A09D96] text-[12px] tracking-[0.1em] uppercase font-bold relative -top-1">02</span>Problem
+                </h2>
+                <div class="mb-16 -mx-6 md:ml-0 md:-mr-12 lg:-mr-32 relative group" id="problemSlider">
+                    <div class="w-full overflow-hidden relative rounded-[20px]" style="height: 480px;">
+                        <div class="flex transition-transform duration-500 ease-in-out gap-4 h-full" id="problemTrack">
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center gap-5 mt-10">
+                        <div class="bg-[rgba(248,249,250,0.8)] relative rounded-[9999px] flex items-center justify-center gap-4 px-4 py-4 border border-[rgba(229,231,235,0.5)]"
+                            id="problemDots"></div>
+                        <button
+                            class="w-12 h-12 bg-[rgba(248,249,250,0.8)] rounded-full flex items-center justify-center border border-[rgba(229,231,235,0.5)] hover:bg-[rgba(209,213,219,0.8)] transition-colors"
+                            id="problemPauseBtn"><svg id="pauseIcon" class="w-6 h-6 fill-[#1C1B1F]" viewBox="0 0 24 24">
+                                <path d="M14 19V5H18V19H14ZM6 19V5H10V19H6Z" />
+                            </svg><svg id="playIcon" class="w-6 h-6 fill-[#1C1B1F] hidden" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                            </svg><svg id="replayIcon" class="w-6 h-6 fill-[#1C1B1F] hidden" viewBox="0 0 24 24">
+                                <path
+                                    d="M7 19V17H14.1C15.15 17 16.0625 16.6667 16.8375 16C17.6125 15.3333 18 14.5 18 13.5C18 12.5 17.6125 11.6667 16.8375 11C16.0625 10.3333 15.15 10 14.1 10H7.8L10.4 12.6L9 14L4 9L9 4L10.4 5.4L7.8 8H14.1C15.7167 8 17.1042 8.525 18.2625 9.575C19.4208 10.625 20 11.9333 20 13.5C20 15.0667 19.4208 16.375 18.2625 17.425C17.1042 18.475 15.7167 19 14.1 19H7Z" />
+                            </svg></button>
+                    </div>
+                </div>
+                <div class="max-w-[754px]">
+                    <div class="flex flex-col gap-6 text-[#444444] text-[16px] leading-[1.6]">
+                        <p>The Manulife insurance lead generation funnel on SingSaver suffered from high form
+                            abandonment rates. Users were confronted with a long, single-page form that exposed all
+                            fields at once, creating cognitive overload before the first field was completed.</p>
+                        <p>The form lacked clear value signposting and failed to communicate why each piece of
+                            information was being collected, eroding trust early in the journey. Dense legal text and
+                            eligibility requirements were buried below the fold, leading users to drop off when
+                            unexpected information surfaced mid-flow.</p>
+                        <p>The business needed a redesigned funnel that could increase qualified lead submissions while
+                            maintaining compliance with Manulife's strict brand and legal guidelines.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 03 Research -->
+            <section id="research" class="mb-32 section-target">
+                <h2 class="font-instrument text-[36px] md:text-[44px] text-[#111111] flex items-center gap-6 mb-12">
+                    <span
+                        class="font-plex text-[#A09D96] text-[12px] tracking-[0.1em] uppercase font-bold relative -top-1">03</span>Research
+                    and Insights
+                </h2>
+                <div class="mb-20 -mx-6 md:ml-0 md:-mr-12 lg:-mr-32 overflow-visible relative">
+                    <div class="flex items-stretch overflow-x-auto snap-x snap-mandatory gap-4 md:gap-8 pb-4 hide-scrollbar w-full"
+                        id="resTrack">
+                        <div class="shrink-0 w-2 md:hidden"></div>
+                        <div class="w-[85vw] max-w-md md:max-w-none md:w-[754px] h-[278px] md:h-[480px] shrink-0 snap-start bg-white rounded-[16px] border border-[#D8D4CC]/30 flex flex-col gap-6 relative overflow-hidden
+                            ">
+
+                            <img src="image/image_research-and-insights_1-opt.webp" alt="Funnel Analysis"
+                                class="w-full object-contain mix-blend-multiply" onerror="this.style.display='none'">
+
+                            <button
+                                class="js-zoom-btn absolute bottom-6 right-6 w-10 h-10 hover:scale-105 transition-transform z-10 rounded-full shadow-lg"
+                                data-src="image/image_research-and-insights_1-opt.webp"><svg viewBox="0 0 400 400"
+                                    fill="none" class="w-full h-full">
+                                    <rect width="400" height="400" rx="200" fill="#1F2937" />
+                                    <mask id="mr1" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="80" y="80"
+                                        width="240" height="240">
+                                        <rect x="80" y="80" width="240" height="240" fill="#D9D9D9" />
+                                    </mask>
+                                    <g mask="url(#mr1)">
+                                        <path d="M130 270V210H150V250H190V270H130ZM250 190V150H210V130H270V190H250Z"
+                                            fill="#F8F9FA" />
+                                    </g>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="max-w-[754px] flex flex-col gap-12">
+                    <div class="flex flex-col items-start gap-4">
+                        <h3 class="text-[29px] font-normal text-[#000000] font-instrument leading-[44px]">Form Friction
+                            Analysis:</h3>
+                        <p class="text-[#444444] text-[16px] leading-[1.6]">Session recordings revealed users spending
+                            excessive time on the first screen, confused by the volume of simultaneous fields. The
+                            single-column layout on mobile made the form feel endless.</p>
+                    </div>
+                    <div class="flex flex-col items-start gap-4">
+                        <h3 class="text-[29px] font-normal text-[#000000] font-instrument leading-[44px]">Trust Signals:
+                        </h3>
+                        <p class="text-[#444444] text-[16px] leading-[1.6]">Users who dropped off cited concerns about
+                            data privacy and unclear next steps. Manulife's brand credibility was underutilized — the
+                            form lacked reassurance cues at critical decision points.</p>
+                    </div>
+                    <div class="flex flex-col items-start gap-4">
+                        <h3 class="text-[29px] font-normal text-[#000000] font-instrument leading-[44px]">Competitive
+                            Benchmark:</h3>
+                        <p class="text-[#444444] text-[16px] leading-[1.6]">Leading insurance comparison platforms used
+                            chunked, step-by-step flows with progress indicators. SingSaver's single-page approach was
+                            out of step with user expectations shaped by competitors.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 04 Strategy -->
+            <section id="strategy" class="mb-32 section-target">
+                <h2 class="font-instrument text-[36px] md:text-[44px] text-[#111111] flex items-center gap-6 mb-12">
+                    <span
+                        class="font-plex text-[#A09D96] text-[12px] tracking-[0.1em] uppercase font-bold relative -top-1">04</span>Design
+                    Strategy
+                </h2>
+                <div class="mb-16 -mx-6 md:ml-0 md:-mr-12 lg:-mr-32 relative group" id="strategySlider">
+                    <div class="w-full overflow-hidden relative rounded-[20px]" style="height: 480px;">
+                        <div class="flex transition-transform duration-500 ease-in-out gap-4 h-full" id="strategyTrack">
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center gap-5 mt-10">
+                        <div class="bg-[rgba(248,249,250,0.8)] relative rounded-[9999px] flex items-center justify-center gap-4 px-4 py-4 border border-[rgba(229,231,235,0.5)]"
+                            id="strategyDots"></div>
+                        <button
+                            class="w-12 h-12 bg-[rgba(248,249,250,0.8)] rounded-full flex items-center justify-center border border-[rgba(229,231,235,0.5)] hover:bg-[rgba(209,213,219,0.8)] transition-colors"
+                            id="strategyPauseBtn"><svg id="stratPauseIcon" class="w-6 h-6 fill-[#1C1B1F]"
+                                viewBox="0 0 24 24">
+                                <path d="M14 19V5H18V19H14ZM6 19V5H10V19H6Z" />
+                            </svg><svg id="stratPlayIcon" class="w-6 h-6 fill-[#1C1B1F] hidden" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                            </svg><svg id="stratReplayIcon" class="w-6 h-6 fill-[#1C1B1F] hidden" viewBox="0 0 24 24">
+                                <path
+                                    d="M7 19V17H14.1C15.15 17 16.0625 16.6667 16.8375 16C17.6125 15.3333 18 14.5 18 13.5C18 12.5 17.6125 11.6667 16.8375 11C16.0625 10.3333 15.15 10 14.1 10H7.8L10.4 12.6L9 14L4 9L9 4L10.4 5.4L7.8 8H14.1C15.7167 8 17.1042 8.525 18.2625 9.575C19.4208 10.625 20 11.9333 20 13.5C20 15.0667 19.4208 16.375 18.2625 17.425C17.1042 18.475 15.7167 19 14.1 19H7Z" />
+                            </svg></button>
+                    </div>
+                </div>
+                <div class="max-w-[754px] flex flex-col gap-12">
+                    <div class="flex flex-col items-start gap-4">
+                        <h3 class="text-[29px] font-normal text-[#000000] font-instrument leading-[44px]">Bite-Sized
+                            Chunking:</h3>
+                        <p class="text-[#444444] text-[16px] leading-[1.6]">Break the long form into discrete, logically
+                            grouped steps. Each screen presents only what the user needs to complete at that moment,
+                            eliminating overwhelm before the journey begins.</p>
+                    </div>
+                    <div class="flex flex-col items-start gap-4">
+                        <h3 class="text-[29px] font-normal text-[#000000] font-instrument leading-[44px]">Momentum
+                            Building:</h3>
+                        <p class="text-[#444444] text-[16px] leading-[1.6]">A visible progress indicator creates
+                            psychological commitment at each step. Users who see progress are more likely to complete
+                            the flow — the sunk cost principle working in our favour.</p>
+                    </div>
+                    <div class="flex flex-col items-start gap-4">
+                        <h3 class="text-[29px] font-normal text-[#000000] font-instrument leading-[44px]">Transparency &
+                            Trust:</h3>
+                        <p class="text-[#444444] text-[16px] leading-[1.6]">Eligibility criteria and data usage
+                            disclosures surfaced upfront in plain language, preventing mid-flow surprises. Manulife's
+                            brand credibility and logo placement added reassurance at critical decision points.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 05 Solution -->
+            <section id="solution" class="mb-32 section-target">
+                <h2 class="font-instrument text-[36px] md:text-[44px] text-[#111111] flex items-center gap-6 mb-12">
+                    <span
+                        class="font-plex text-[#A09D96] text-[12px] tracking-[0.1em] uppercase font-bold relative -top-1">05</span>Solution
+                </h2>
+                <!-- Block 1: 3-cards slider -->
+                <div class="mb-8 -mx-6 md:ml-0 md:-mr-12 lg:-mr-32 relative group" id="solSlider1">
+                    <div class="w-full overflow-hidden relative rounded-[20px]" style="height: 480px;">
+                        <div class="flex transition-transform duration-500 ease-in-out gap-4 h-full slider-track"></div>
+                    </div>
+                    <div class="flex items-center justify-center gap-5 mt-10">
+                        <div
+                            class="bg-[rgba(248,249,250,0.8)] relative rounded-[9999px] flex items-center justify-center gap-4 px-4 py-4 border border-[rgba(229,231,235,0.5)] slider-dots">
+                        </div>
+                        <button
+                            class="slider-pause-btn w-12 h-12 bg-[rgba(248,249,250,0.8)] rounded-full flex items-center justify-center border border-[rgba(229,231,235,0.5)] hover:bg-[rgba(209,213,219,0.8)] transition-colors">
+                            <svg class="w-6 h-6 fill-[#1C1B1F] pause-icon" viewBox="0 0 24 24">
+                                <path d="M14 19V5H18V19H14ZM6 19V5H10V19H6Z" />
+                            </svg>
+                            <svg class="w-6 h-6 fill-[#1C1B1F] play-icon hidden" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                            <svg class="w-6 h-6 fill-[#1C1B1F] replay-icon hidden" viewBox="0 0 24 24">
+                                <path
+                                    d="M7 19V17H14.1C15.15 17 16.0625 16.6667 16.8375 16C17.6125 15.3333 18 14.5 18 13.5C18 12.5 17.6125 11.6667 16.8375 11C16.0625 10.3333 15.15 10 14.1 10H7.8L10.4 12.6L9 14L4 9L9 4L10.4 5.4L7.8 8H14.1C15.7167 8 17.1042 8.525 18.2625 9.575C19.4208 10.625 20 11.9333 20 13.5C20 15.0667 19.4208 16.375 18.2625 17.425C17.1042 18.475 15.7167 19 14.1 19H7Z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="max-w-[754px] flex flex-col items-start gap-4 mb-16">
+                    <h3 class="text-[29px] font-normal text-[#000000] font-instrument leading-[44px]">High-Conversion
+                        CTA Strategy:</h3>
+                    <p class="text-[#444444] text-[16px] leading-[1.6]">The redesign features prominent, strategically
+                        placed CTAs like “Sign Up to Win” and “Submit.” By eliminating visual noise around these
+                        touchpoints, we ensure a frictionless path to conversion.</p>
+                </div>
+
+                <!-- Block 2: 3-cards slider -->
+                <div class="mb-8 -mx-6 md:ml-0 md:-mr-12 lg:-mr-32 relative group" id="solSlider2">
+                    <div class="w-full overflow-hidden relative rounded-[20px]" style="height: 480px;">
+                        <div class="flex transition-transform duration-500 ease-in-out gap-4 h-full slider-track"></div>
+                    </div>
+                    <div class="flex items-center justify-center gap-5 mt-10">
+                        <div
+                            class="bg-[rgba(248,249,250,0.8)] relative rounded-[9999px] flex items-center justify-center gap-4 px-4 py-4 border border-[rgba(229,231,235,0.5)] slider-dots">
+                        </div>
+                        <button
+                            class="slider-pause-btn w-12 h-12 bg-[rgba(248,249,250,0.8)] rounded-full flex items-center justify-center border border-[rgba(229,231,235,0.5)] hover:bg-[rgba(209,213,219,0.8)] transition-colors">
+                            <svg class="w-6 h-6 fill-[#1C1B1F] pause-icon" viewBox="0 0 24 24">
+                                <path d="M14 19V5H18V19H14ZM6 19V5H10V19H6Z" />
+                            </svg>
+                            <svg class="w-6 h-6 fill-[#1C1B1F] play-icon hidden" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                            <svg class="w-6 h-6 fill-[#1C1B1F] replay-icon hidden" viewBox="0 0 24 24">
+                                <path
+                                    d="M7 19V17H14.1C15.15 17 16.0625 16.6667 16.8375 16C17.6125 15.3333 18 14.5 18 13.5C18 12.5 17.6125 11.6667 16.8375 11C16.0625 10.3333 15.15 10 14.1 10H7.8L10.4 12.6L9 14L4 9L9 4L10.4 5.4L7.8 8H14.1C15.7167 8 17.1042 8.525 18.2625 9.575C19.4208 10.625 20 11.9333 20 13.5C20 15.0667 19.4208 16.375 18.2625 17.425C17.1042 18.475 15.7167 19 14.1 19H7Z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="max-w-[754px] flex flex-col items-start gap-4 mb-16">
+                    <h3 class="text-[29px] font-normal text-[#000000] font-instrument leading-[44px]">Streamlined User
+                        Journey</h3>
+                    <p class="text-[#444444] text-[16px] leading-[1.6]">We’ve replaced complexity with clarity. A
+                        numbered, step-by-step flow simplifies campaign mechanics, reducing cognitive load and allowing
+                        users to grasp the process in seconds.</p>
+                </div>
+
+                <!-- Block 3, 4, 5: Texts -->
+                <div class="max-w-[754px] flex flex-col items-start gap-4 mb-16">
+                    <h3 class="text-[29px] font-normal text-[#000000] font-instrument leading-[44px]">Concise &
+                        Scannable Messaging</h3>
+                    <p class="text-[#444444] text-[16px] leading-[1.6]">Content has been optimized for speed and
+                        transparency. By using structured, high-impact copy, we maintain user trust while ensuring the
+                        value proposition is immediately clear.</p>
+                </div>
+                <div class="max-w-[754px] flex flex-col items-start gap-4 mb-16">
+                    <h3 class="text-[29px] font-normal text-[#000000] font-instrument leading-[44px]">Mobile-First
+                        Excellence</h3>
+                    <p class="text-[#444444] text-[16px] leading-[1.6]">The interface is fully responsive, prioritizing
+                        touch-friendly navigation and optimized input fields. The form is built for seamless
+                        interaction, ensuring a premium experience across all devices.</p>
+                </div>
+                <div class="max-w-[754px] flex flex-col items-start gap-4 mb-16">
+                    <h3 class="text-[29px] font-normal text-[#000000] font-instrument leading-[44px]">Reinforced Brand
+                        Credibility</h3>
+                    <p class="text-[#444444] text-[16px] leading-[1.6]">To build immediate trust, the Manulife logo is
+                        now positioned prominently at the top of the hierarchy, anchoring the campaign with established
+                        brand authority.</p>
+                </div>
+
+                <!-- Block 6: 2-cards slider -->
+                <div class="mb-8 -mx-6 md:ml-0 md:-mr-12 lg:-mr-32 relative group" id="solSlider3">
+                    <div class="w-full overflow-hidden relative rounded-[20px]" style="height: 480px;">
+                        <div class="flex transition-transform duration-500 ease-in-out gap-4 h-full slider-track"></div>
+                    </div>
+                    <div class="flex items-center justify-center gap-5 mt-10">
+                        <div
+                            class="bg-[rgba(248,249,250,0.8)] relative rounded-[9999px] flex items-center justify-center gap-4 px-4 py-4 border border-[rgba(229,231,235,0.5)] slider-dots">
+                        </div>
+                        <button
+                            class="slider-pause-btn w-12 h-12 bg-[rgba(248,249,250,0.8)] rounded-full flex items-center justify-center border border-[rgba(229,231,235,0.5)] hover:bg-[rgba(209,213,219,0.8)] transition-colors">
+                            <svg class="w-6 h-6 fill-[#1C1B1F] pause-icon" viewBox="0 0 24 24">
+                                <path d="M14 19V5H18V19H14ZM6 19V5H10V19H6Z" />
+                            </svg>
+                            <svg class="w-6 h-6 fill-[#1C1B1F] play-icon hidden" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                            <svg class="w-6 h-6 fill-[#1C1B1F] replay-icon hidden" viewBox="0 0 24 24">
+                                <path
+                                    d="M7 19V17H14.1C15.15 17 16.0625 16.6667 16.8375 16C17.6125 15.3333 18 14.5 18 13.5C18 12.5 17.6125 11.6667 16.8375 11C16.0625 10.3333 15.15 10 14.1 10H7.8L10.4 12.6L9 14L4 9L9 4L10.4 5.4L7.8 8H14.1C15.7167 8 17.1042 8.525 18.2625 9.575C19.4208 10.625 20 11.9333 20 13.5C20 15.0667 19.4208 16.375 18.2625 17.425C17.1042 18.475 15.7167 19 14.1 19H7Z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="max-w-[754px] flex flex-col items-start gap-4 mb-16">
+                    <h3 class="text-[29px] font-normal text-[#000000] font-instrument leading-[44px]">Integrated
+                        "Blog-Friendly" Application Form</h3>
+                    <div class="text-[#444444] text-[16px] leading-[1.6] flex flex-col gap-4">
+                        <p>We’ve swapped bulky layouts for a compact banner card that preserves the blog’s readability.
+                            Key features include:</p>
+                        <ul class="list-disc pl-6 flex flex-col gap-2">
+                            <li>Reduced Height: Minimizes scrolling fatigue.</li>
+                            <li>Urgency Drivers: An integrated countdown timer to boost FOMO.</li>
+                            <li>Frictionless Design: A step-by-step guide that keeps the campaign visible without
+                                interrupting the editorial experience.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- 06 Impact -->
+            <section id="impact" class="mb-12 section-target">
+                <h2 class="font-instrument text-[36px] md:text-[44px] text-[#111111] flex items-center gap-6 mb-12">
+                    <span
+                        class="font-plex text-[#A09D96] text-[12px] tracking-[0.1em] uppercase font-bold relative -top-1">06</span>Impact
+                </h2>
+                <div class="max-w-[754px] space-y-10">
+                    <div class="flex gap-6 group items-start">
+                        <div class="shrink-0 mt-1"><i data-lucide="chevron-right" class="w-4 h-4 text-[#A09D96]"></i>
+                        </div>
+                        <p
+                            class="text-[#444444] text-[16px] leading-[1.6] group-hover:text-[#111111] transition-colors">
+                            Dramatically reduced form abandonment on mobile devices, directly impacting the bottom line.
+                        </p>
+                    </div>
+                    <div class="flex gap-6 group items-start">
+                        <div class="shrink-0 mt-1"><i data-lucide="chevron-right" class="w-4 h-4 text-[#A09D96]"></i>
+                        </div>
+                        <p
+                            class="text-[#444444] text-[16px] leading-[1.6] group-hover:text-[#111111] transition-colors">
+                            Increased the total volume of qualified leads, proving that simplifying complex financial
+                            data directly drives customer acquisition and business growth.</p>
+                    </div>
+                </div>
+            </section>
+        </article>
+    </main>
+
+    <nav class="max-w-[1280px] mx-auto px-6 md:px-12 pb-24 md:pb-32">
+        <div
+            class="border-t border-[#D8D4CC] pt-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-12">
+            <a href="../project_1/index.html" class="flex items-center gap-6 group"><svg
+                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    data-lucide="arrow-left" aria-hidden="true"
+                    class="lucide lucide-arrow-left w-6 h-6 text-[#888888] group-hover:text-[#111111] group-hover:-translate-x-2 transition-all">
+                    <path d="m12 19-7-7 7-7"></path>
+                    <path d="M19 12H5"></path>
+                </svg>
+                <div class="flex flex-col"><span
+                        class="font-plex text-[10px] tracking-[0.2em] text-[#888888] uppercase mb-1">Previous</span><span
+                        class="font-sans text-[20px] text-[#111111] group-hover:opacity-80 transition-opacity">Personal
+                        Loan Tactical Blog Redesign</span></div>
+            </a>
+            <a href="../project_3/index.html" class="flex items-center gap-6 group">
+                <div class="flex flex-col items-end text-right"><span
+                        class="font-plex text-[10px] tracking-[0.2em] text-[#888888] uppercase mb-1">Next</span><span
+                        class="font-sans text-[20px] text-[#111111] group-hover:opacity-80 transition-opacity">MoneyHero
+                        Result Page Revamp</span></div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" data-lucide="arrow-right" aria-hidden="true"
+                    class="lucide lucide-arrow-right w-6 h-6 text-[#888888] group-hover:text-[#111111] group-hover:translate-x-2 transition-all">
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <section id="contact" class="project-page max-w-[1280px] mx-auto px-6 md:px-12 pb-24 md:pb-32">
+        <div class="contact-section border-t border-[#D8D4CC] pt-24 flex flex-col items-center text-center">
+            <h2 class="font-instrument text-[32px] md:text-[36px] text-[#111111] mb-4">Let's build meaningful product
+                experiences together.</h2>
+            <p class="text-[16px] leading-[1.6] text-[#666666] max-w-[540px] mb-10">Currently open to Senior Product
+                Design roles in FinTech and InsurTech where I can drive customer acquisition and shape design culture.
+            </p>
+            <div class="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-4">
+                <a href="https://wa.me/85266262881" target="_blank"
+                    class="cta-button flex items-center justify-center gap-2 bg-[#111111] text-white text-[10px] tracking-[0.2em] uppercase font-bold px-8 py-4 rounded-full hover:bg-black transition-colors w-full sm:w-auto"><i
+                        data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp Me</a>
+                <a href="mailto:fanchunho.jobs@gmail.com" target="_blank"
+                    class="cta-button flex items-center justify-center gap-2 border border-[#111111] text-[#111111] bg-transparent text-[10px] tracking-[0.2em] uppercase font-bold px-8 py-4 rounded-full hover:bg-black/5 transition-colors w-full sm:w-auto"><i
+                        data-lucide="mail" class="w-4 h-4"></i> Email Me</a>
+                <a href="https://www.linkedin.com/in/michael-fan-chun-ho-a910a9325/" target="_blank"
+                    class="cta-button flex items-center justify-center w-full sm:w-auto gap-2 border border-[#111111] text-[#111111] bg-transparent text-[10px] tracking-[0.2em] uppercase font-bold px-8 py-4 rounded-full hover:bg-black/5 transition-colors"><svg
+                        width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <g opacity="0.8">
+                            <path
+                                d="M10.6667 5.33301C11.7276 5.33301 12.745 5.75444 13.4952 6.50458C14.2453 7.25473 14.6667 8.27214 14.6667 9.33301V13.9997H12.0001V9.33301C12.0001 8.97939 11.8596 8.64025 11.6096 8.3902C11.3595 8.14015 11.0204 7.99967 10.6667 7.99967C10.3131 7.99967 9.97399 8.14015 9.72394 8.3902C9.47389 8.64025 9.33341 8.97939 9.33341 9.33301V13.9997H6.66675V9.33301C6.66675 8.27214 7.08818 7.25473 7.83832 6.50458C8.58847 5.75444 9.60588 5.33301 10.6667 5.33301Z"
+                                stroke="#0A0A0A" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M4 6H1.33334V13.9997H4V6Z" stroke="#0A0A0A" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path
+                                d="M2.66667 4C3.40305 4 4 3.40305 4 2.66667C4 1.93029 3.40305 1.33334 2.66667 1.33334C1.93029 1.33301 1.33334 1.93029 1.33334 2.66667C1.33334 3.40305 1.93029 4 2.66667 4Z"
+                                stroke="#0A0A0A" stroke-linecap="round" stroke-linejoin="round" />
+                        </g>
+                    </svg> LinkedIn</a>
+            </div>
+        </div>
+    </section>
+
+    <footer
+        class="max-w-[1280px] mx-auto px-6 md:px-12 py-8 border-t border-[#D8D4CC] flex flex-col sm:flex-row items-center justify-between gap-4">
+        <span class="font-plex text-[10px] tracking-[0.2em] uppercase text-[#888888]">© 2025 Michael Fan. All rights
+            reserved.</span>
+        <span class="font-plex text-[10px] tracking-[0.2em] uppercase text-[#888888]">Senior UX/UI Designer</span>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div id="lightboxModal" class="fixed inset-0 z-[200] hidden items-center justify-center"
+        style="backdrop-filter:blur(5px);background:rgba(0,0,0,0.4)">
+        <div class="absolute flex flex-col items-start"
+            style="top:50%;left:50%;transform:translate(-50%,-50%);height:800px;width:min(1280px,100vw);min-width:min(720px,100vw)">
+            <div id="lightboxContent"
+                class="bg-white flex flex-col overflow-hidden relative rounded-[24px] w-full h-full"
+                style="box-shadow:0px 25px 50px -12px rgba(0,0,0,0.25)">
+                <div id="lightboxScrollArea" class="flex-1 min-h-0 relative w-full overflow-auto"
+                    style="cursor:grab;user-select:none">
+                    <div id="lightboxWrapper"
+                        style="display: flex; padding: 32px; min-width: max-content; min-height: 100%;">
+                        <img id="lightboxImage" src="" alt="Zoomed view"
+                            style="display: block; margin: auto; max-width: none; pointer-events: none; transition: width 0.3s ease-in-out; width: 724px;"
+                            draggable="false">
+                    </div>
+                </div>
+                <div id="lightboxZoomTabs" class="absolute flex gap-2 items-center justify-center p-1 rounded-[999px]"
+                    style="bottom:56px;left:50%;transform:translateX(-50%);backdrop-filter:blur(2px);background:rgba(0,0,0,0.8)">
+                    <div class="absolute border border-[rgba(255,255,255,0.1)] inset-0 pointer-events-none rounded-[9999px]"
+                        style="box-shadow:0px 4px 20px 0px rgba(0,0,0,0.25)"></div>
+                    <button
+                        class="lightbox-zoom-tab flex items-center justify-center px-4 py-2 rounded-[9999px] font-plex text-xs whitespace-nowrap bg-white text-[#1f2937]"
+                        data-zoom="fit">Fit</button>
+                    <button
+                        class="lightbox-zoom-tab flex items-center justify-center px-4 py-2 rounded-[9999px] font-plex text-xs text-[#9a9fa5] hover:bg-white/10 transition-colors whitespace-nowrap"
+                        data-zoom="50">50%</button>
+                    <button
+                        class="lightbox-zoom-tab flex items-center justify-center px-4 py-2 rounded-[9999px] font-plex text-xs text-[#9a9fa5] hover:bg-white/10 transition-colors whitespace-nowrap"
+                        data-zoom="100">100%</button>
+                    <button
+                        class="lightbox-zoom-tab flex items-center justify-center px-4 py-2 rounded-[9999px] font-plex text-xs text-[#9a9fa5] hover:bg-white/10 transition-colors whitespace-nowrap"
+                        data-zoom="200">200%</button>
+                </div>
+                <div
+                    class="absolute flex items-center justify-end left-0 pb-2 pt-4 px-4 top-0 w-full pointer-events-none">
+                    <button id="lightboxClose"
+                        class="flex items-center justify-center rounded-full w-12 h-12 hover:opacity-80 transition-opacity pointer-events-auto"
+                        style="background:#1f2937" aria-label="Close lightbox">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 16 16">
+                            <path d="M12 4L4 12" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1.667" />
+                            <path d="M4 4L12 12" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1.667" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mobileNavDrawer"
+        class="fixed inset-0 z-[500] bg-[#EFECE5] flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] translate-x-full md:hidden">
+        <div class="px-6 py-6 flex items-center justify-between border-b border-[#D8D4CC]/50"><a
+                href="../homepage/index.html" id="mobileLogoLink"
+                class="font-instrument text-[28px] leading-none text-[#111111]">Michael. Fan</a><button
+                id="mobileMenuCloseBtn" class="p-2 -mr-2 text-[#111111]"><i data-lucide="x"
+                    class="w-6 h-6"></i></button></div>
+        <div class="flex flex-col px-6 pt-12 pb-8 gap-8 flex-1 overflow-y-auto"><button id="mobileWorkBtn"
+                class="font-plex text-[14px] tracking-[2px] text-[#111111] uppercase flex items-center justify-between">Work
+                <i data-lucide="arrow-right" class="w-4 h-4 opacity-50"></i></button><a href="#contact"
+                id="mobileContactLink"
+                class="font-plex text-[14px] tracking-[2px] text-[#111111] uppercase flex items-center justify-between">Contact
+                <i data-lucide="arrow-right" class="w-4 h-4 opacity-50"></i></a>
+            <div class="mt-auto pt-12"><a href="../resume/index.html"
+                    class="flex items-center justify-center w-full bg-[#0a0a0a] text-white font-plex font-medium text-[12px] leading-[18px] tracking-[2.4px] uppercase py-[16px] rounded-[12px] hover:bg-black/80 transition-all duration-300">View
+                    Resume</a></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+        window.addEventListener('DOMContentLoaded', () => { const l = document.getElementById('initialLoader'); setTimeout(() => { l.style.opacity = '0'; setTimeout(() => { l.style.display = 'none' }, 700) }, 1000) });
+        const workToggle = document.getElementById('workToggle'), workMenu = document.getElementById('workMenu'), workChevron = document.getElementById('workChevron'), closeWorkMenuBtn = document.getElementById('closeWorkMenuBtn');
+        workToggle.addEventListener('click', (e) => { e.stopPropagation(); const o = workMenu.classList.toggle('is-open'); workChevron.style.transform = o ? 'rotate(180deg)' : 'rotate(0)' });
+        if (closeWorkMenuBtn) { closeWorkMenuBtn.addEventListener('click', (e) => { e.stopPropagation(); workMenu.classList.remove('is-open'); workChevron.style.transform = 'rotate(0)' }) }
+        document.addEventListener('click', (e) => { if (!workMenu.contains(e.target) && e.target !== workToggle) { workMenu.classList.remove('is-open'); workChevron.style.transform = 'rotate(0)' } });
+        const mOBtn = document.getElementById('mobileMenuOpenBtn'), mCBtn = document.getElementById('mobileMenuCloseBtn'), mDr = document.getElementById('mobileNavDrawer'), mWBtn = document.getElementById('mobileWorkBtn'), mConLink = document.getElementById('mobileContactLink'), mLogo = document.getElementById('mobileLogoLink');
+        function openM() { mDr.classList.remove('translate-x-full'); mDr.classList.add('translate-x-0'); document.body.style.overflow = 'hidden'; lucide.createIcons() }
+        function closeM() { mDr.classList.add('translate-x-full'); mDr.classList.remove('translate-x-0'); document.body.style.overflow = '' }
+        mOBtn.addEventListener('click', openM); mCBtn.addEventListener('click', closeM); mConLink.addEventListener('click', closeM); mLogo.addEventListener('click', closeM);
+        mWBtn.addEventListener('click', () => { closeM(); setTimeout(() => { const o = workMenu.classList.toggle('is-open'); workChevron.style.transform = o ? 'rotate(180deg)' : 'rotate(0)' }, 300) });
+        const sections = document.querySelectorAll('.section-target'), sLinks = document.querySelectorAll('.sidebar-link'), mLinks = document.querySelectorAll('.mobile-toc-link'), mToc = document.getElementById('mobileToc');
+        new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { sLinks.forEach(l => { const s = l.getAttribute('data-section'), n = l.querySelector('.sidebar-num'), t = l.querySelector('.sidebar-text'); if (s === entry.target.id) { n.classList.add('sidebar-active-num'); t.classList.add('sidebar-active') } else { n.classList.remove('sidebar-active-num'); t.classList.remove('sidebar-active') } }); mLinks.forEach(l => { if (l.getAttribute('data-section') === entry.target.id) { l.classList.add('mobile-toc-active'); if (mToc) { const sl = l.offsetLeft - (mToc.clientWidth / 2) + (l.clientWidth / 2); mToc.scrollTo({ left: sl, behavior: 'smooth' }) } } else l.classList.remove('mobile-toc-active') }) } }) }, { rootMargin: '-20% 0px -70% 0px' }).observe = function (s) { sections.forEach(sec => IntersectionObserver.prototype.observe.call(this, sec)) };
+        // Re-init observer properly
+        const obs = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { sLinks.forEach(l => { const s = l.getAttribute('data-section'), n = l.querySelector('.sidebar-num'), t = l.querySelector('.sidebar-text'); if (s === entry.target.id) { n.classList.add('sidebar-active-num'); t.classList.add('sidebar-active') } else { n.classList.remove('sidebar-active-num'); t.classList.remove('sidebar-active') } }); mLinks.forEach(l => { if (l.getAttribute('data-section') === entry.target.id) { l.classList.add('mobile-toc-active') } else l.classList.remove('mobile-toc-active') }) } }) }, { rootMargin: '-20% 0px -70% 0px' });
+        sections.forEach(s => obs.observe(s));
+        let isTocDown = false, tocStartX, tocScrollLeft;
+        if (mToc) { mToc.addEventListener('mousedown', (e) => { isTocDown = true; mToc.style.cursor = 'grabbing'; tocStartX = e.pageX - mToc.offsetLeft; tocScrollLeft = mToc.scrollLeft }); mToc.addEventListener('mouseleave', () => { isTocDown = false; mToc.style.cursor = 'grab' }); mToc.addEventListener('mouseup', () => { isTocDown = false; mToc.style.cursor = 'grab' }); mToc.addEventListener('mousemove', (e) => { if (!isTocDown) return; e.preventDefault(); const x = e.pageX - mToc.offsetLeft; const w = (x - tocStartX) * 2; mToc.scrollLeft = tocScrollLeft - w }) }
+        // Lightbox
+        const lightboxModal = document.getElementById('lightboxModal');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const lightboxScrollArea = document.getElementById('lightboxScrollArea');
+        let lbDragging = false, lbStartX = 0, lbStartY = 0, lbScrollLeft = 0, lbScrollTop = 0;
+
+        if (lightboxScrollArea) {
+            lightboxScrollArea.addEventListener('mousedown', (e) => {
+                lbDragging = true;
+                lightboxScrollArea.classList.add('is-dragging');
+                lbStartX = e.clientX;
+                lbStartY = e.clientY;
+                lbScrollLeft = lightboxScrollArea.scrollLeft;
+                lbScrollTop = lightboxScrollArea.scrollTop;
+            });
+            document.addEventListener('mousemove', (e) => {
+                if (!lbDragging) return;
+                e.preventDefault();
+                lightboxScrollArea.scrollLeft = lbScrollLeft - (e.clientX - lbStartX);
+                lightboxScrollArea.scrollTop = lbScrollTop - (e.clientY - lbStartY);
+            });
+            document.addEventListener('mouseup', () => {
+                lbDragging = false;
+                lightboxScrollArea.classList.remove('is-dragging');
+            });
+        }
+
+        function setLightboxZoom(level) {
+            const sizeMap = { 'fit': '724px', '50': '900px', '100': '1024px', '200': '2048px' };
+            const zoomWidth = sizeMap[level] || '724px';
+            lightboxImage.style.width = zoomWidth;
+
+            document.querySelectorAll('.lightbox-zoom-tab').forEach(btn => {
+                if (btn.getAttribute('data-zoom') === level) {
+                    btn.classList.add('bg-white', 'text-[#1f2937]');
+                    btn.classList.remove('text-[#9a9fa5]', 'hover:bg-white/10');
+                } else {
+                    btn.classList.remove('bg-white', 'text-[#1f2937]');
+                    btn.classList.add('text-[#9a9fa5]', 'hover:bg-white/10');
+                }
+            });
+        }
+
+        let lbOriginalOverflow = '';
+        let lbOriginalPaddingRight = '';
+
+        function openLightbox(src) {
+            const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+            lbOriginalOverflow = document.body.style.overflow;
+            lbOriginalPaddingRight = document.body.style.paddingRight;
+
+            document.body.style.overflow = 'hidden';
+            if (scrollbarWidth > 0) {
+                document.body.style.paddingRight = `${scrollbarWidth}px`;
+            }
+
+            lightboxImage.src = src;
+            lightboxImage.style.width = '724px';
+            lightboxModal.classList.remove('hidden');
+            lightboxModal.classList.add('flex');
+            setLightboxZoom('fit');
+            lightboxScrollArea.scrollTop = 0;
+            lightboxScrollArea.scrollLeft = 0;
+        }
+
+        function closeLightbox() {
+            lightboxModal.classList.add('hidden');
+            lightboxModal.classList.remove('flex');
+            lightboxImage.src = '';
+
+            document.body.style.overflow = lbOriginalOverflow;
+            document.body.style.paddingRight = lbOriginalPaddingRight;
+        }
+
+        if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+        if (lightboxModal) lightboxModal.addEventListener('click', (e) => { if (e.target === lightboxModal) closeLightbox(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !lightboxModal.classList.contains('hidden')) closeLightbox(); });
+
+        document.querySelectorAll('.lightbox-trigger').forEach(img => {
+            img.addEventListener('click', () => openLightbox(img.src));
+        });
+        document.querySelectorAll('.js-zoom-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const src = btn.getAttribute('data-src');
+                if (src) openLightbox(src);
+            });
+        });
+        document.querySelectorAll('.lightbox-zoom-tab').forEach(btn => {
+            btn.addEventListener('click', () => setLightboxZoom(btn.getAttribute('data-zoom')));
+        });
+        // Research slider
+        const resTrack = document.getElementById('resTrack');
+        const resPrev = document.getElementById('resPrev');
+        const resNext = document.getElementById('resNext');
+        if (resPrev) resPrev.addEventListener('click', () => { const w = resTrack.querySelector('.snap-start')?.offsetWidth || 400; resTrack.scrollBy({ left: -(w + 32), behavior: 'smooth' }) });
+        if (resNext) resNext.addEventListener('click', () => { const w = resTrack.querySelector('.snap-start')?.offsetWidth || 400; resTrack.scrollBy({ left: w + 32, behavior: 'smooth' }) });
+        // Problem slider
+        const problemSliderWrapper = document.getElementById('problemSlider');
+        const problemTrack = document.getElementById('problemTrack');
+        const problemDotsContainer = document.getElementById('problemDots');
+        const problemPauseBtn = document.getElementById('problemPauseBtn');
+        const problemSlidesData = [
+            {
+                iframe: '<iframe style="border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 20px;" width="100%" height="600" src="https://embed.figma.com/proto/osMRlGQXy4rmhL0ji6DPWi/P3-%7C-Portfolio-%7C-2024-SG-Manulife-Lead-Gen?page-id=581%3A14162&node-id=581-14412&viewport=526%2C43%2C0.38&scaling=scale-down&content-scaling=fixed&embed-host=share" allowfullscreen></iframe>'
+            },
+            { src: 'image/image_problem_01-opt.webp' }];
+        let currentSlide = 0, isPlaying = true, interval;
+
+        problemSlidesData.forEach((s, i) => {
+            const el = document.createElement('div');
+            el.className = 'slide-item relative flex-shrink-0 w-[85%] sm:w-[80%] flex bg-[#ffffff] rounded-[20px] overflow-hidden flex-col items-center justify-center';
+            if (s.iframe) {
+                el.innerHTML = s.iframe;
+            } else {
+                el.innerHTML = `<img src="${s.src}" alt="Problem ${i + 1}" class="w-full h-full object-cover object-top mix-blend-multiply p-4 md:p-8" onerror="this.style.display='none'"><button class="absolute bottom-6 right-6 w-10 h-10 hover:scale-105 transition-transform z-10 rounded-full shadow-lg" onclick="event.stopPropagation();openLightbox('${s.src}')"><svg viewBox="0 0 40 40" fill="none" class="w-full h-full"><rect width="40" height="40" rx="20" fill="#1F2937"/><mask id="mp${i}" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="8" y="8" width="24" height="24"><rect x="8" y="8" width="24" height="24" fill="#D9D9D9"/></mask><g mask="url(#mp${i})"><path d="M13 27V21H15V25H19V27H13ZM25 19V15H21V13H27V19H25Z" fill="#F8F9FA"/></g></svg></button>`;
+            }
+            problemTrack.appendChild(el);
+            const d = document.createElement('button');
+            d.className = 'block relative overflow-hidden rounded-full transition-all duration-300 w-4 h-4 bg-[rgba(31,41,55,0.3)]';
+            d.addEventListener('click', () => { clearInterval(interval); currentSlide = i; updateSlider(); if (isPlaying) startAuto(); });
+            problemDotsContainer.appendChild(d);
+        });
+
+        function updateSlider() {
+            // 1. Sync Dots UI
+            problemDotsContainer.querySelectorAll('button').forEach((d, i) => d.classList.toggle('dot-active', i === currentSlide));
+
+            // 2. Base Centering Math
+            const trackWidth = problemTrack.parentElement.offsetWidth;
+            const slides = problemTrack.querySelectorAll('.slide-item');
+            if (slides.length === 0) return;
+            const slideWidth = slides[0].offsetWidth;
+            const gap = 16;
+            const centerOffset = (trackWidth - slideWidth) / 2;
+            let moveAmount = (slideWidth + gap) * currentSlide - centerOffset;
+
+            // 3. BOUNDARY CLAMPING
+            const maxMove = problemTrack.scrollWidth - trackWidth;
+            moveAmount = Math.max(0, Math.min(moveAmount, maxMove));
+
+            // 4. Transform & Fading
+            problemTrack.style.transform = `translateX(-${moveAmount}px)`;
+            Array.from(problemTrack.children).forEach((s, i) => {
+                s.style.opacity = i === currentSlide ? '1' : '0.4';
+                s.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            });
+        }
+
+        let hasCompleted = false;
+        function startAuto() {
+            clearInterval(interval);
+            interval = setInterval(() => {
+                if (currentSlide + 1 >= problemSlidesData.length) {
+                    clearInterval(interval);
+                    isPlaying = false;
+                    hasCompleted = true;
+                    document.getElementById('pauseIcon')?.classList.add('hidden');
+                    document.getElementById('playIcon')?.classList.add('hidden');
+                    document.getElementById('replayIcon')?.classList.remove('hidden');
+                    return;
+                }
+                currentSlide++;
+                updateSlider();
+            }, 3000);
+        }
+
+        startAuto();
+        setTimeout(updateSlider, 100);
+
+        problemSliderWrapper.addEventListener('mouseenter', () => { clearInterval(interval); problemSliderWrapper.classList.add('is-paused'); });
+        problemSliderWrapper.addEventListener('mouseleave', () => { if (isPlaying && lightboxModal.classList.contains('hidden')) { startAuto(); problemSliderWrapper.classList.remove('is-paused'); } });
+        problemPauseBtn.addEventListener('click', () => {
+            if (hasCompleted) {
+                currentSlide = 0;
+                hasCompleted = false;
+                isPlaying = true;
+                updateSlider();
+                document.getElementById('replayIcon')?.classList.add('hidden');
+                document.getElementById('pauseIcon')?.classList.remove('hidden');
+                document.getElementById('playIcon')?.classList.add('hidden');
+                startAuto();
+                return;
+            }
+            isPlaying = !isPlaying;
+            document.getElementById('pauseIcon')?.classList.toggle('hidden', !isPlaying);
+            document.getElementById('playIcon')?.classList.toggle('hidden', isPlaying);
+            if (isPlaying) {
+                startAuto();
+                problemSliderWrapper.classList.remove('is-paused');
+            } else {
+                clearInterval(interval);
+                problemSliderWrapper.classList.add('is-paused');
+            }
+        });
+
+        // Strategy slider
+        const strategySliderWrapper = document.getElementById('strategySlider');
+        const strategyTrack = document.getElementById('strategyTrack');
+        const strategyDotsContainer = document.getElementById('strategyDots');
+        const strategyPauseBtn = document.getElementById('strategyPauseBtn');
+        const strategySlidesData = [
+            { src: 'image/image_design-strategy_slider_01-opt 2.28.01 AM.webp' },
+            { src: 'image/image_design-strategy_slider_02-opt 2.28.01 AM.webp' },
+            { src: 'image/image_design-strategy_slider_03-opt 2.28.01 AM.webp' }
+        ];
+        let stratCurrentSlide = 0, stratIsPlaying = true, stratInterval;
+
+        strategySlidesData.forEach((s, i) => {
+            const el = document.createElement('div');
+            el.className = 'slide-item relative flex-shrink-0 w-[85%] sm:w-[80%] flex bg-[#ffffff] rounded-[20px] overflow-hidden flex-col items-center justify-center';
+            el.innerHTML = `<img src="${s.src}" alt="Strategy ${i + 1}" class="w-full h-full object-cover object-top mix-blend-multiply p-4 md:p-8" onerror="this.style.display='none'"><button class="absolute bottom-6 right-6 w-10 h-10 hover:scale-105 transition-transform z-10 rounded-full shadow-lg" onclick="event.stopPropagation();openLightbox('${s.src}')"><svg viewBox="0 0 40 40" fill="none" class="w-full h-full"><rect width="40" height="40" rx="20" fill="#1F2937"/><mask id="mst${i}" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="8" y="8" width="24" height="24"><rect x="8" y="8" width="24" height="24" fill="#D9D9D9"/></mask><g mask="url(#mst${i})"><path d="M13 27V21H15V25H19V27H13ZM25 19V15H21V13H27V19H25Z" fill="#F8F9FA"/></g></svg></button>`;
+            strategyTrack.appendChild(el);
+            const d = document.createElement('button');
+            d.className = 'block relative overflow-hidden rounded-full transition-all duration-300 w-4 h-4 bg-[rgba(31,41,55,0.3)]';
+            d.addEventListener('click', () => { clearInterval(stratInterval); stratCurrentSlide = i; stratUpdateSlider(); if (stratIsPlaying) stratStartAuto(); });
+            strategyDotsContainer.appendChild(d);
+        });
+
+        function stratUpdateSlider() {
+            strategyDotsContainer.querySelectorAll('button').forEach((d, i) => d.classList.toggle('dot-active', i === stratCurrentSlide));
+            const trackWidth = strategyTrack.parentElement.offsetWidth;
+            const slides = strategyTrack.querySelectorAll('.slide-item');
+            if (slides.length === 0) return;
+            const slideWidth = slides[0].offsetWidth;
+            const gap = 16;
+            const centerOffset = (trackWidth - slideWidth) / 2;
+            let moveAmount = (slideWidth + gap) * stratCurrentSlide - centerOffset;
+            const maxMove = strategyTrack.scrollWidth - trackWidth;
+            moveAmount = Math.max(0, Math.min(moveAmount, maxMove));
+            strategyTrack.style.transform = `translateX(-${moveAmount}px)`;
+            Array.from(strategyTrack.children).forEach((s, i) => {
+                s.style.opacity = i === stratCurrentSlide ? '1' : '0.4';
+                s.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            });
+        }
+
+        let stratHasCompleted = false;
+        function stratStartAuto() {
+            clearInterval(stratInterval);
+            stratInterval = setInterval(() => {
+                if (stratCurrentSlide + 1 >= strategySlidesData.length) {
+                    clearInterval(stratInterval);
+                    stratIsPlaying = false;
+                    stratHasCompleted = true;
+                    document.getElementById('stratPauseIcon')?.classList.add('hidden');
+                    document.getElementById('stratPlayIcon')?.classList.add('hidden');
+                    document.getElementById('stratReplayIcon')?.classList.remove('hidden');
+                    return;
+                }
+                stratCurrentSlide++;
+                stratUpdateSlider();
+            }, 3000);
+        }
+
+        stratStartAuto();
+        setTimeout(stratUpdateSlider, 100);
+
+        strategySliderWrapper.addEventListener('mouseenter', () => { clearInterval(stratInterval); strategySliderWrapper.classList.add('is-paused'); });
+        strategySliderWrapper.addEventListener('mouseleave', () => { if (stratIsPlaying && lightboxModal.classList.contains('hidden')) { stratStartAuto(); strategySliderWrapper.classList.remove('is-paused'); } });
+        strategyPauseBtn.addEventListener('click', () => {
+            if (stratHasCompleted) {
+                stratCurrentSlide = 0;
+                stratHasCompleted = false;
+                stratIsPlaying = true;
+                stratUpdateSlider();
+                document.getElementById('stratReplayIcon')?.classList.add('hidden');
+                document.getElementById('stratPauseIcon')?.classList.remove('hidden');
+                document.getElementById('stratPlayIcon')?.classList.add('hidden');
+                stratStartAuto();
+                return;
+            }
+            stratIsPlaying = !stratIsPlaying;
+            document.getElementById('stratPauseIcon')?.classList.toggle('hidden', !stratIsPlaying);
+            document.getElementById('stratPlayIcon')?.classList.toggle('hidden', stratIsPlaying);
+            if (stratIsPlaying) {
+                stratStartAuto();
+                strategySliderWrapper.classList.remove('is-paused');
+            } else {
+                clearInterval(stratInterval);
+                strategySliderWrapper.classList.add('is-paused');
+            }
+        });
+
+        // Solution slider logic
+        function initSolutionSlider(sliderId, slidesData) {
+            const wrapper = document.getElementById(sliderId);
+            if (!wrapper) return;
+            const track = wrapper.querySelector('.slider-track');
+            const dotsContainer = wrapper.querySelector('.slider-dots');
+            const pauseBtn = wrapper.querySelector('.slider-pause-btn');
+
+            let currentSlide = 0, isPlaying = true, interval;
+
+            slidesData.forEach((s, i) => {
+                const el = document.createElement('div');
+                el.className = 'slide-item relative flex-shrink-0 w-[85%] sm:w-[80%] flex bg-[#ffffff] rounded-[20px] overflow-hidden flex-col items-center justify-center';
+                if (s.iframe) {
+                    el.innerHTML = s.iframe;
+                } else {
+                    el.innerHTML = `<img src="${s.src}" alt="Solution ${i + 1}" class="w-full h-full object-cover object-top mix-blend-multiply p-4 md:p-8" onerror="this.style.display='none'"><button class="absolute bottom-6 right-6 w-10 h-10 hover:scale-105 transition-transform z-10 rounded-full shadow-lg" onclick="event.stopPropagation();openLightbox('${s.src}')"><svg viewBox="0 0 40 40" fill="none" class="w-full h-full"><rect width="40" height="40" rx="20" fill="#1F2937"/><mask id="msm${sliderId}${i}" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="8" y="8" width="24" height="24"><rect x="8" y="8" width="24" height="24" fill="#D9D9D9"/></mask><g mask="url(#msm${sliderId}${i})"><path d="M13 27V21H15V25H19V27H13ZM25 19V15H21V13H27V19H25Z" fill="#F8F9FA"/></g></svg></button>`;
+                }
+                track.appendChild(el);
+                const d = document.createElement('button');
+                d.className = 'block relative overflow-hidden rounded-full transition-all duration-300 w-4 h-4 bg-[rgba(31,41,55,0.3)]';
+                d.addEventListener('click', () => { clearInterval(interval); currentSlide = i; update(); if (isPlaying) start(); });
+                dotsContainer.appendChild(d);
+            });
+
+            function update() {
+                dotsContainer.querySelectorAll('button').forEach((d, i) => d.classList.toggle('dot-active', i === currentSlide));
+                const trackWidth = track.parentElement.offsetWidth;
+                const slides = track.querySelectorAll('.slide-item');
+                if (slides.length === 0) return;
+                const slideWidth = slides[0].offsetWidth;
+                const gap = 16;
+                const centerOffset = (trackWidth - slideWidth) / 2;
+                let moveAmount = (slideWidth + gap) * currentSlide - centerOffset;
+                const maxMove = Math.max(0, track.scrollWidth - trackWidth);
+                moveAmount = Math.max(0, Math.min(moveAmount, maxMove));
+                track.style.transform = `translateX(-${moveAmount}px)`;
+                Array.from(track.children).forEach((s, i) => {
+                    s.style.opacity = i === currentSlide ? '1' : '0.4';
+                    s.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                });
+            }
+
+            let hasCompleted = false;
+            function start() {
+                clearInterval(interval);
+                interval = setInterval(() => {
+                    if (currentSlide + 1 >= slidesData.length) {
+                        clearInterval(interval);
+                        isPlaying = false;
+                        hasCompleted = true;
+                        wrapper.querySelector('.pause-icon')?.classList.add('hidden');
+                        wrapper.querySelector('.play-icon')?.classList.add('hidden');
+                        wrapper.querySelector('.replay-icon')?.classList.remove('hidden');
+                        return;
+                    }
+                    currentSlide++;
+                    update();
+                }, 3000);
+            }
+
+            start();
+            setTimeout(update, 100);
+
+            wrapper.addEventListener('mouseenter', () => { clearInterval(interval); wrapper.classList.add('is-paused'); });
+            wrapper.addEventListener('mouseleave', () => { if (isPlaying && document.getElementById('lightboxModal').classList.contains('hidden')) { start(); wrapper.classList.remove('is-paused'); } });
+
+            if (pauseBtn) {
+                pauseBtn.addEventListener('click', () => {
+                    if (hasCompleted) {
+                        currentSlide = 0; hasCompleted = false; isPlaying = true; update();
+                        wrapper.querySelector('.replay-icon')?.classList.add('hidden');
+                        wrapper.querySelector('.pause-icon')?.classList.remove('hidden');
+                        wrapper.querySelector('.play-icon')?.classList.add('hidden');
+                        start();
+                        return;
+                    }
+                    isPlaying = !isPlaying;
+                    wrapper.querySelector('.pause-icon')?.classList.toggle('hidden', !isPlaying);
+                    wrapper.querySelector('.play-icon')?.classList.toggle('hidden', isPlaying);
+                    if (isPlaying) { start(); wrapper.classList.remove('is-paused'); }
+                    else { clearInterval(interval); wrapper.classList.add('is-paused'); }
+                });
+            }
+        }
+
+        initSolutionSlider('solSlider1', [{ iframe: '<iframe style="border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 20px;" width="100%" height="600" src="https://embed.figma.com/proto/osMRlGQXy4rmhL0ji6DPWi/P3-%7C-Portfolio-%7C-2024-SG-Manulife-Lead-Gen?page-id=581%3A15654&node-id=581-15655&viewport=506%2C-90%2C0.34&scaling=scale-down&content-scaling=fixed&embed-host=share" allowfullscreen></iframe>' }, { src: 'image/image_solution_slide_01a-opt.webp' }, { src: 'image/image_solution_slide_02a-opt.webp' }]);
+        initSolutionSlider('solSlider2', [{ src: 'image/image_solution_slide_01-opt.webp' }, { src: 'image/image_solution_slide_02-opt.webp' }, { src: 'image/image_solution_slide_03-opt.webp' }]);
+        initSolutionSlider('solSlider3', [{ src: 'image/image_solution_slide_06-opt.webp' }, { src: 'image/image_solution_slide_07-opt.webp' }]);
+    </script>
+</body>
+
+</html>
