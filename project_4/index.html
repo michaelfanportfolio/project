@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Page Optimization - Michael Fan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'], instrument: ['Instrument Serif', 'serif'], plex: ['IBM Plex Mono', 'monospace'] }, keyframes: { shimmer: { '100%': { transform: 'translateX(100%)' } } }, animation: { shimmer: 'shimmer 1.5s infinite' } } } }</script>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none
+        }
+
+        html {
+            scroll-padding-top: 120px
+        }
+
+        .sidebar-active {
+            color: #111111 !important;
+            opacity: 1 !important
+        }
+
+        .sidebar-active-num {
+            color: #111111 !important
+        }
+
+        @keyframes loadingBar {
+            0% {
+                width: 0%
+            }
+
+            100% {
+                width: 100%
+            }
+        }
+
+        .dot-active {
+            width: 64px !important;
+            height: 16px !important;
+            background-color: rgba(31, 41, 55, 0.2) !important
+        }
+
+        .dot-active::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: #1f2937;
+            animation: loadingBar 3s linear forwards;
+            border-radius: 9999px
+        }
+
+        .is-paused .dot-active::after {
+            animation-play-state: paused
+        }
+
+        .mobile-toc-active {
+            color: #111111 !important;
+            font-weight: 500
+        }
+
+        .mobile-toc-active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #111111
+        }
+
+        #mobileToc {
+            cursor: grab
+        }
+
+        #mobileToc:active {
+            cursor: grabbing
+        }
+
+        #mobileToc a {
+            user-select: none;
+            -webkit-user-drag: none
+        }
+
+        #workMenu {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+            transform: translateY(-10px);
+            pointer-events: none;
+            opacity: 0;
+            max-height: 85vh;
+            overflow-y: auto
+        }
+
+        #workMenu.is-open {
+            transform: translateY(0);
+            pointer-events: auto;
+            opacity: 1
+        }
+
+        #lightboxScrollArea {
+            cursor: grab;
+            user-select: none
+        }
+
+        #lightboxScrollArea.is-dragging {
+            cursor: grabbing
+        }
+
+        #lightboxImage {
+            display: block;
+            pointer-events: none;
+            transition: width 0.3s ease-in-out
+        }
+
+        .skeleton {
+            position: relative;
+            overflow: hidden;
+            background-color: #E5E2D9
+        }
+
+        .skeleton::after {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            transform: translateX(-100%);
+            background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.2) 20%, rgba(255, 255, 255, 0.5) 60%, rgba(255, 255, 255, 0));
+            animation: shimmer 2s infinite;
+            content: ''
+        }
+
+        /* Scoped Mobile CTA for Contact Section */
+        @media (max-width: 767px) {
+            .project-page .contact-section .cta-button {
+                width: 100% !important;
+                display: flex !important;
+                justify-content: center !important;
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="min-h-screen bg-[#EFECE5] text-[#111111] font-sans antialiased selection:bg-[#111111] selection:text-white overflow-x-hidden">
+
+    <div id="initialLoader"
+        class="fixed inset-0 z-[1000] bg-[#EFECE5] flex flex-col transition-opacity duration-700 pointer-events-none">
+        <div class="max-w-[1280px] w-full mx-auto px-6 md:px-12 py-8 flex items-center justify-between">
+            <div class="h-8 w-32 skeleton rounded-md"></div>
+            <div class="hidden md:flex gap-8">
+                <div class="h-3 w-12 skeleton rounded"></div>
+                <div class="h-10 w-32 skeleton rounded-lg"></div>
+            </div>
+        </div>
+        <div class="max-w-[1280px] w-full mx-auto px-6 md:px-12 pt-12 flex gap-32 flex-1">
+            <div class="hidden md:block w-[220px]">
+                <div class="h-2 w-20 skeleton rounded mb-10"></div>
+            </div>
+            <div class="flex-1 space-y-6">
+                <div class="h-2 w-24 skeleton rounded"></div>
+                <div class="h-14 w-full skeleton rounded-lg"></div>
+                <div class="h-[400px] w-full skeleton rounded-[24px]"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header
+        class="sticky top-0 z-[100] w-full bg-[#EFECE5]/95 backdrop-blur-sm border-b border-transparent transition-colors"
+        id="mainHeader">
+        <div
+            class="max-w-[1280px] mx-auto px-6 md:px-12 py-6 md:py-8 flex items-center justify-between relative z-[101]">
+            <a href="../homepage/index.html"
+                class="font-instrument text-[28px] md:text-[32px] leading-none cursor-pointer hover:opacity-80 transition-opacity">Michael.
+                Fan</a>
+            <div class="hidden md:flex items-center gap-[40px]">
+                <nav class="flex items-center gap-[32px]">
+                    <button id="workToggle"
+                        class="font-plex text-[10px] tracking-[2px] text-[#666666] uppercase hover:text-[#111111] transition-colors flex items-center gap-1 group">Work
+                        <i data-lucide="chevron-down" id="workChevron"
+                            class="w-3 h-3 transition-transform duration-300"></i></button>
+                    <a href="#contact"
+                        class="font-plex text-[10px] tracking-[2px] text-[#666666] uppercase hover:text-[#111111] transition-colors">Contact</a>
+                </nav>
+                <a href="../resume/index.html"
+                    class="flex items-center justify-center bg-[#0a0a0a] text-white font-plex font-medium text-[12px] leading-[18px] tracking-[2.4px] uppercase px-[32px] py-[12px] rounded-[10px] hover:bg-black/80 transition-all duration-300">View
+                    Resume</a>
+            </div>
+            <div class="md:hidden flex items-center">
+                <button id="mobileMenuOpenBtn" class="text-[#111111] hover:opacity-70 transition-opacity p-2 -mr-2"
+                    aria-label="Open Mobile Menu"><i data-lucide="menu" class="w-6 h-6"></i></button>
+            </div>
+        </div>
+        <!-- Megamenu -->
+        <div id="workMenu" class="absolute top-full left-0 w-full bg-[#EFECE5] border-b border-[#D8D4CC] shadow-2xl">
+            <div class="max-w-[1280px] mx-auto px-6 md:px-12 pt-8 pb-12">
+                <div
+                    class="font-plex text-[9px] tracking-[0.2em] text-[#A09D96] uppercase mb-8 border-b border-[#D8D4CC] pb-4">
+                    Select a Case Study</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-6">
+                    <a href="../project_1/index.html"
+                        class="group flex gap-5 items-start p-6 hover:bg-[#EAE7E0] rounded-2xl transition-colors">
+                        <div class="w-20 h-20 shrink-0 rounded-xl bg-[#E8E6DF] overflow-hidden"><img
+                                src="../project_1/image/megamenu image-01-opt.webp" alt=""
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'"></div>
+                        <div class="flex flex-col pt-1"><span class="font-plex text-[9px] text-[#A09D96] mb-1">01</span>
+                            <h3
+                                class="font-serif text-[15px] leading-tight text-[#666666] group-hover:text-[#111111] transition-colors">
+                                Personal Loan Tactical Blog Redesign</h3>
+                        </div>
+                    </a>
+                    <a href="../project_2/index.html"
+                        class="group flex gap-5 items-start p-6 hover:bg-[#EAE7E0] rounded-2xl transition-colors">
+                        <div class="w-20 h-20 shrink-0 rounded-xl bg-[#E8E6DF] overflow-hidden"><img
+                                src="../project_1/image/megamenu image-02-opt.webp" alt=""
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'"></div>
+                        <div class="flex flex-col pt-1"><span class="font-plex text-[9px] text-[#A09D96] mb-1">02</span>
+                            <h3
+                                class="font-serif text-[15px] leading-tight text-[#666666] group-hover:text-[#111111] transition-colors">
+                                Manulife Lead Generation Optimization</h3>
+                        </div>
+                    </a>
+                    <a href="../project_3/index.html"
+                        class="group flex gap-5 items-start p-6 hover:bg-[#EAE7E0] rounded-2xl transition-colors">
+                        <div class="w-20 h-20 shrink-0 rounded-xl bg-[#E8E6DF] overflow-hidden"><img
+                                src="../project_1/image/megamenu image-03-opt.webp" alt=""
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'"></div>
+                        <div class="flex flex-col pt-1"><span class="font-plex text-[9px] text-[#A09D96] mb-1">03</span>
+                            <h3
+                                class="font-serif text-[15px] leading-tight text-[#666666] group-hover:text-[#111111] transition-colors">
+                                MoneyHero Result Page Revamp</h3>
+                        </div>
+                    </a>
+                    <a href="../project_4/index.html"
+                        class="group flex gap-5 items-start p-6 hover:bg-[#EAE7E0] rounded-2xl transition-colors">
+                        <div class="w-20 h-20 shrink-0 rounded-xl bg-[#E8E6DF] overflow-hidden"><img
+                                src="../project_1/image/megamenu image-04-opt.webp" alt=""
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'"></div>
+                        <div class="flex flex-col pt-1"><span class="font-plex text-[9px] text-[#A09D96] mb-1">04</span>
+                            <h3
+                                class="font-serif text-[15px] leading-tight text-[#666666] group-hover:text-[#111111] transition-colors">
+                                Campaign Page Optimization (Citi, HSBC & SC)</h3>
+                        </div>
+                    </a>
+                    <a href="../project_5/index.html"
+                        class="group flex gap-5 items-start p-6 hover:bg-[#EAE7E0] rounded-2xl transition-colors">
+                        <div class="w-20 h-20 shrink-0 rounded-xl bg-[#E8E6DF] overflow-hidden"><img
+                                src="../project_1/image/megamenu image-05-opt.webp" alt=""
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'"></div>
+                        <div class="flex flex-col pt-1"><span class="font-plex text-[9px] text-[#A09D96] mb-1">05</span>
+                            <h3
+                                class="font-serif text-[15px] leading-tight text-[#666666] group-hover:text-[#111111] transition-colors">
+                                Reward Redemption Flow Redesign</h3>
+                        </div>
+                    </a>
+                    <a href="../project_6/index.html"
+                        class="group flex gap-5 items-start p-6 hover:bg-[#EAE7E0] rounded-2xl transition-colors">
+                        <div class="w-20 h-20 shrink-0 rounded-xl bg-[#E8E6DF] overflow-hidden"><img
+                                src="../project_1/image/megamenu image-06-opt.webp" alt=""
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'"></div>
+                        <div class="flex flex-col pt-1"><span class="font-plex text-[9px] text-[#A09D96] mb-1">06</span>
+                            <h3
+                                class="font-serif text-[15px] leading-tight text-[#666666] group-hover:text-[#111111] transition-colors">
+                                Virtual Bank Page Redesign</h3>
+                        </div>
+                    </a>
+                    <a href="../project_7/index.html"
+                        class="group flex gap-5 items-start p-6 hover:bg-[#EAE7E0] rounded-2xl transition-colors">
+                        <div class="w-20 h-20 shrink-0 rounded-xl bg-[#E8E6DF] overflow-hidden"><img
+                                src="../project_1/image/megamenu image-07-opt.webp" alt=""
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'"></div>
+                        <div class="flex flex-col pt-1"><span class="font-plex text-[9px] text-[#A09D96] mb-1">07</span>
+                            <h3
+                                class="font-serif text-[15px] leading-tight text-[#666666] group-hover:text-[#111111] transition-colors">
+                                Travel Insurance Funnel & Brand Storytelling</h3>
+                        </div>
+                    </a>
+                    <a href="../project_8/index.html"
+                        class="group flex gap-5 items-start p-6 hover:bg-[#EAE7E0] rounded-2xl transition-colors">
+                        <div class="w-20 h-20 shrink-0 rounded-xl bg-[#E8E6DF] overflow-hidden"><img
+                                src="../project_1/image/megamenu image-08-opt.webp" alt=""
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'"></div>
+                        <div class="flex flex-col pt-1"><span class="font-plex text-[9px] text-[#A09D96] mb-1">08</span>
+                            <h3
+                                class="font-serif text-[15px] leading-tight text-[#666666] group-hover:text-[#111111] transition-colors">
+                                COVID-19 Travel Insurance Comparison Page</h3>
+                        </div>
+                    </a>
+                    <a href="../project_9/index.html"
+                        class="group flex gap-5 items-start p-6 hover:bg-[#EAE7E0] rounded-2xl transition-colors">
+                        <div class="w-20 h-20 shrink-0 rounded-xl bg-[#E8E6DF] overflow-hidden"><img
+                                src="../project_1/image/megamenu image-09-opt.webp" alt=""
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'"></div>
+                        <div class="flex flex-col pt-1"><span class="font-plex text-[9px] text-[#A09D96] mb-1">09</span>
+                            <h3
+                                class="font-serif text-[15px] leading-tight text-[#666666] group-hover:text-[#111111] transition-colors">
+                                Multi-Step Car Insurance Checkout Flow</h3>
+                        </div>
+                    </a>
+                </div>
+                <div class="flex justify-center mt-8 pt-8 border-t border-[#D8D4CC]/50">
+                    <button id="closeWorkMenuBtn"
+                        class="flex items-center gap-2 font-plex text-[10px] tracking-[2px] text-[#666666] uppercase hover:text-[#111111] transition-colors group">Close
+                        Menu <i data-lucide="chevron-up" class="w-4 h-4"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer -->
+    <div id="mobileDrawer" class="fixed inset-0 z-[200] pointer-events-none">
+        <div id="mobileDrawerBg" class="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-300"></div>
+        <div id="mobileDrawerPanel"
+            class="absolute top-0 right-0 h-full w-[80vw] max-w-[320px] bg-[#EFECE5] translate-x-full transition-transform duration-400 ease-in-out flex flex-col p-8 gap-8 overflow-y-auto">
+            <div class="flex items-center justify-between"><span class="font-instrument text-2xl">Michael.
+                    Fan</span><button id="mobileMenuCloseBtn"><i data-lucide="x" class="w-5 h-5"></i></button></div>
+            <nav class="flex flex-col gap-6 mt-4">
+                <span class="font-plex text-[10px] tracking-[2px] text-[#888888] uppercase">Case Studies</span>
+                <a href="../project_1/index.html" class="font-serif text-[15px] text-[#444444] hover:text-[#111111]">01
+                    — Personal Loan Blog Redesign</a>
+                <a href="../project_2/index.html" class="font-serif text-[15px] text-[#444444] hover:text-[#111111]">02
+                    — Manulife Lead Gen</a>
+                <a href="../project_3/index.html" class="font-serif text-[15px] text-[#444444] hover:text-[#111111]">03
+                    — Result Page Revamp</a>
+                <a href="../project_4/index.html" class="font-serif text-[15px] text-[#111111] font-medium">04 —
+                    Campaign Page Optimization</a>
+                <a href="../project_5/index.html" class="font-serif text-[15px] text-[#444444] hover:text-[#111111]">05
+                    — Reward Redemption Flow</a>
+                <a href="../project_6/index.html" class="font-serif text-[15px] text-[#444444] hover:text-[#111111]">06
+                    — Virtual Bank Page</a>
+                <a href="../project_7/index.html" class="font-serif text-[15px] text-[#444444] hover:text-[#111111]">07
+                    — Travel Insurance Funnel</a>
+                <a href="../project_8/index.html" class="font-serif text-[15px] text-[#444444] hover:text-[#111111]">08
+                    — COVID-19 Comparison Page</a>
+                <a href="../project_9/index.html" class="font-serif text-[15px] text-[#444444] hover:text-[#111111]">09
+                    — Car Insurance Checkout</a>
+            </nav>
+            <div class="mt-auto space-y-4">
+                <a href="#contact"
+                    class="font-plex text-[10px] tracking-[2px] text-[#666666] uppercase hover:text-[#111111] block py-2">Contact</a>
+                <a href="../resume/index.html"
+                    class="flex items-center justify-center w-full bg-[#0a0a0a] text-white font-plex font-medium text-[12px] leading-[18px] tracking-[2.4px] uppercase py-[16px] rounded-[12px] hover:bg-black/80 transition-all duration-300">View
+                    Resume</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-[1280px] mx-auto px-6 md:px-12 pt-6 md:pt-8 w-full relative z-[50]">
+        <nav
+            class="flex items-center gap-3 font-plex text-[9px] tracking-[0.2em] text-[#888888] uppercase overflow-x-auto hide-scrollbar whitespace-nowrap">
+            <a href="../homepage/index.html" class="hover:text-[#111111] transition-colors shrink-0">Home</a><span
+                class="text-[#D8D4CC] shrink-0">/</span><a href="../homepage/index.html"
+                class="hover:text-[#111111] transition-colors shrink-0">Work</a><span
+                class="text-[#D8D4CC] shrink-0">/</span><span class="text-[#111111] shrink-0">Campaign Page
+                Optimization</span>
+        </nav>
+    </div>
+
+
+    <main class="max-w-[1280px] mx-auto px-6 md:px-12 pt-8 md:pt-10 pb-12 flex flex-col md:flex-row gap-16 lg:gap-32">
+        <aside class="hidden md:block w-[220px] shrink-0">
+            <div class="sticky top-[120px]">
+                <h4 class="font-plex text-[9px] tracking-[0.2em] text-[#888888] uppercase mb-10">Contents</h4>
+                <nav>
+                    <ul class="flex flex-col gap-6">
+                        <li><a href="#overview" class="flex gap-6 items-baseline sidebar-link"
+                                data-section="overview"><span
+                                    class="font-plex text-[#A09D96] text-[9px] sidebar-num">01</span><span
+                                    class="text-[#888888] text-[15px] font-serif sidebar-text">Project
+                                    Overview</span></a></li>
+                        <li><a href="#problem" class="flex gap-6 items-baseline sidebar-link"
+                                data-section="problem"><span
+                                    class="font-plex text-[#A09D96] text-[9px] sidebar-num">02</span><span
+                                    class="text-[#888888] text-[15px] font-serif sidebar-text">Problem</span></a></li>
+                        <li><a href="#research" class="flex gap-6 items-baseline sidebar-link"
+                                data-section="research"><span
+                                    class="font-plex text-[#A09D96] text-[9px] sidebar-num">03</span><span
+                                    class="text-[#888888] text-[15px] font-serif sidebar-text">Research and
+                                    Insights</span></a></li>
+                        <li><a href="#strategy" class="flex gap-6 items-baseline sidebar-link"
+                                data-section="strategy"><span
+                                    class="font-plex text-[#A09D96] text-[9px] sidebar-num">04</span><span
+                                    class="text-[#888888] text-[15px] font-serif sidebar-text">Design
+                                    Strategy</span></a></li>
+                        <li><a href="#solution" class="flex gap-6 items-baseline sidebar-link"
+                                data-section="solution"><span
+                                    class="font-plex text-[#A09D96] text-[9px] sidebar-num">05</span><span
+                                    class="text-[#888888] text-[15px] font-serif sidebar-text">Solution</span></a></li>
+                        <li><a href="#impact" class="flex gap-6 items-baseline sidebar-link" data-section="impact"><span
+                                    class="font-plex text-[#A09D96] text-[9px] sidebar-num">06</span><span
+                                    class="text-[#888888] text-[15px] font-serif sidebar-text">Impact</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <article class="flex-1 min-w-0">
+            <!-- Mobile TOC -->
+            <div id="mobileToc"
+                class="md:hidden sticky top-[76px] z-[90] bg-[#EFECE5]/95 backdrop-blur-sm border-y border-[#D8D4CC]/50 -mx-6 mb-12 w-[calc(100%+48px)] overflow-x-auto hide-scrollbar shadow-sm">
+                <nav>
+                    <ul class="flex items-center gap-4 w-max px-6 after:content-[''] after:block after:w-2">
+                        <li><a href="#overview"
+                                class="mobile-toc-link block py-4 px-2 text-[15px] font-serif text-[#888888] transition-colors relative"
+                                data-section="overview">Overview</a></li>
+                        <li><a href="#problem"
+                                class="mobile-toc-link block py-4 px-2 text-[15px] font-serif text-[#888888] transition-colors relative"
+                                data-section="problem">Problem</a></li>
+                        <li><a href="#research"
+                                class="mobile-toc-link block py-4 px-2 text-[15px] font-serif text-[#888888] transition-colors relative"
+                                data-section="research">Research</a></li>
+                        <li><a href="#strategy"
+                                class="mobile-toc-link block py-4 px-2 text-[15px] font-serif text-[#888888] transition-colors relative"
+                                data-section="strategy">Strategy</a></li>
+                        <li><a href="#solution"
+                                class="mobile-toc-link block py-4 px-2 text-[15px] font-serif text-[#888888] transition-colors relative"
+                                data-section="solution">Solution</a></li>
+                        <li><a href="#impact"
+                                class="mobile-toc-link block py-4 px-2 text-[15px] font-serif text-[#888888] transition-colors relative"
+                                data-section="impact">Impact</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <!-- Hero -->
+            <div class="flex flex-col gap-8 mb-24 md:mb-32">
+                <p class="font-plex text-[10px] tracking-[2px] text-[#888888] uppercase">Case Study</p>
+                <h1 class="font-instrument text-[48px] md:text-[64px] leading-[1.05] text-[#111111] mb-12">Campaign Page
+                    Optimization<br><span class="italic">(Citi, HSBC & Standard Chartered)</span></h1>
+                <div class="w-full rounded-[24px] overflow-hidden bg-[#e9e5df] h-[300px] md:h-[480px] relative">
+                    <img src="https://www.figma.com/api/mcp/asset/6fab7c43-f351-48db-bf68-6969d38d7f29"
+                        alt="Campaign Page Optimization overlay" class="absolute inset-0 w-full h-full object-cover">
+                </div>
+            </div>
+
+            <!-- Section 01: Overview -->
+            <section id="overview" class="mb-32 section-target">
+                <h2 class="font-instrument text-[36px] md:text-[44px] text-[#111111] flex items-center gap-6 mb-12">
+                    <span
+                        class="font-plex text-[#A09D96] text-[12px] tracking-[0.1em] uppercase font-bold relative -top-1">01</span>
+                    Project Overview
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-12 gap-x-12 border-t border-[#D8D4CC] pt-12">
+                    <div>
+                        <div class="font-plex text-[9px] tracking-[0.2em] text-[#888888] uppercase mb-4">Project Type
+                        </div>
+                        <div class="font-serif text-[#111111] text-[16px] leading-relaxed">Promotional Landing Page UX
+                        </div>
+                    </div>
+                    <div>
+                        <div class="font-plex text-[9px] tracking-[0.2em] text-[#888888] uppercase mb-4">Company</div>
+                        <div class="font-serif text-[#111111] text-[16px] leading-relaxed">SingSaver (MoneyHero Group)
+                        </div>
+                    </div>
+                    <div>
+                        <div class="font-plex text-[9px] tracking-[0.2em] text-[#888888] uppercase mb-4">Timeline</div>
+                        <div class="font-serif text-[#111111] text-[16px] leading-relaxed">May–June 2024</div>
+                    </div>
+                    <div>
+                        <div class="font-plex text-[9px] tracking-[0.2em] text-[#888888] uppercase mb-4">Team</div>
+                        <div class="font-serif text-[#111111] text-[16px] leading-relaxed">Marketing, Compliance, UI
+                            Engineering</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 02: Problem -->
+            <section id="problem" class="mb-32 section-target">
+                <h2 class="font-instrument text-[36px] md:text-[44px] text-[#111111] flex items-center gap-6 mb-12">
+                    <span
+                        class="font-plex text-[#A09D96] text-[12px] tracking-[0.1em] uppercase font-bold relative -top-1">02</span>
+                    Problem
+                </h2>
+
+                <div class="mb-16 -mx-6 md:ml-0 md:-mr-12 lg:-mr-32 relative group" id="problemSlider">
+                    <div class="w-full overflow-hidden relative rounded-[20px]" style="height: 480px;">
+                        <div class="flex transition-transform duration-500 ease-in-out gap-4 h-full" id="problemTrack">
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center gap-5 mt-10">
+                        <div class="bg-[rgba(248,249,250,0.8)] relative rounded-[9999px] flex items-center justify-center gap-4 px-4 py-4 border border-[rgba(229,231,235,0.5)]"
+                            id="problemDots"></div>
+                        <button
+                            class="w-12 h-12 bg-[rgba(248,249,250,0.8)] rounded-full flex items-center justify-center border border-[rgba(229,231,235,0.5)] hover:bg-[rgba(209,213,219,0.8)] transition-colors"
+                            id="problemPauseBtn"><svg id="pauseIcon" class="w-6 h-6 fill-[#1C1B1F]" viewBox="0 0 24 24">
+                                <path d="M14 19V5H18V19H14ZM6 19V5H10V19H6Z" />
+                            </svg><svg id="playIcon" class="w-6 h-6 fill-[#1C1B1F] hidden" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                            </svg><svg id="replayIcon" class="w-6 h-6 fill-[#1C1B1F] hidden" viewBox="0 0 24 24">
+                                <path
+                                    d="M7 19V17H14.1C15.15 17 16.0625 16.6667 16.8375 16C17.6125 15.3333 18 14.5 18 13.5C18 12.5 17.6125 11.6667 16.8375 11C16.0625 10.3333 15.15 10 14.1 10H7.8L10.4 12.6L9 14L4 9L9 4L10.4 5.4L7.8 8H14.1C15.7167 8 17.1042 8.525 18.2625 9.575C19.4208 10.625 20 11.9333 20 13.5C20 15.0667 19.4208 16.375 18.2625 17.425C17.1042 18.475 15.7167 19 14.1 19H7Z" />
+                            </svg></button>
+                    </div>
+                </div>
+
+                <div class="space-y-10">
+                    <div>
+                        <h3 class="font-instrument text-[26px] text-black mb-3">Business Goal</h3>
+                        <ul
+                            class="list-disc list-inside space-y-2 text-[#333333] text-[17px] leading-relaxed opacity-80">
+                            <li>Maximize credit card applications during high-traffic, time-sensitive campaigns</li>
+                            <li>Achieve quarterly acquisition targets</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-instrument text-[26px] text-black mb-3">Key Challenges</h3>
+                        <ul
+                            class="list-disc list-inside space-y-2 text-[#333333] text-[17px] leading-relaxed opacity-80">
+                            <li>Dense legal T&Cs placed directly on the page</li>
+                            <li>Poor visibility of reward differences across campaigns</li>
+                            <li>High cognitive load for users</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-instrument text-[26px] text-black mb-3">User Impact</h3>
+                        <ul
+                            class="list-disc list-inside space-y-2 text-[#333333] text-[17px] leading-relaxed opacity-80">
+                            <li>Difficulty comparing campaign offers</li>
+                            <li>Decision paralysis during selection</li>
+                            <li>Increased drop-off in application flow</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-instrument text-[26px] text-black mb-3">Business Impact</h3>
+                        <ul
+                            class="list-disc list-inside space-y-2 text-[#333333] text-[17px] leading-relaxed opacity-80">
+                            <li>Lower conversion rates despite high traffic</li>
+                            <li>Inefficient use of paid ad spend</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 03: Research and Insights -->
+            <section id="research" class="mb-32 section-target">
+                <h2 class="font-instrument text-[36px] md:text-[44px] text-[#111111] flex items-center gap-6 mb-12">
+                    <span
+                        class="font-plex text-[#A09D96] text-[12px] tracking-[0.1em] uppercase font-bold relative -top-1">03</span>
+                    Research and Insights
+                </h2>
+
+                <!-- Research Slider: 6 previous campaign page screenshots -->
+                <!-- Research Images (Individual) -->
+                <div class="mb-16 -mx-6 md:ml-0 md:-mr-12 lg:-mr-32 relative group" id="researchSlider">
+                    <div class="w-full overflow-hidden relative rounded-[20px]" style="height: 480px;">
+                        <div class="flex transition-transform duration-500 ease-in-out gap-4 h-full" id="researchTrack">
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center gap-5 mt-10">
+                        <div class="bg-[rgba(248,249,250,0.8)] relative rounded-[9999px] flex items-center justify-center gap-4 px-4 py-4 border border-[rgba(229,231,235,0.5)]"
+                            id="researchDots"></div>
+                        <button
+                            class="w-12 h-12 bg-[rgba(248,249,250,0.8)] rounded-full flex items-center justify-center border border-[rgba(229,231,235,0.5)] hover:bg-[rgba(209,213,219,0.8)] transition-colors"
+                            id="researchPauseBtn"><svg id="researchPauseIcon" class="w-6 h-6 fill-[#1C1B1F]"
+                                viewBox="0 0 24 24">
+                                <path d="M14 19V5H18V19H14ZM6 19V5H10V19H6Z" />
+                            </svg><svg id="researchPlayIcon" class="w-6 h-6 fill-[#1C1B1F] hidden" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                            </svg><svg id="researchReplayIcon" class="w-6 h-6 fill-[#1C1B1F] hidden"
+                                viewBox="0 0 24 24">
+                                <path
+                                    d="M7 19V17H14.1C15.15 17 16.0625 16.6667 16.8375 16C17.6125 15.3333 18 14.5 18 13.5C18 12.5 17.6125 11.6667 16.8375 11C16.0625 10.3333 15.15 10 14.1 10H7.8L10.4 12.6L9 14L4 9L9 4L10.4 5.4L7.8 8H14.1C15.7167 8 17.1042 8.525 18.2625 9.575C19.4208 10.625 20 11.9333 20 13.5C20 15.0667 19.4208 16.375 18.2625 17.425C17.1042 18.475 15.7167 19 14.1 19H7Z" />
+                            </svg></button>
+                    </div>
+                </div>
+
+                <div class="space-y-10">
+                    <div>
+                        <h3 class="font-instrument text-[26px] text-black mb-3">Cognitive Overload</h3>
+                        <p class="text-[#555555] text-[17px] leading-relaxed">Users could not easily distinguish between
+                            the welcome gift, exclusive platform gifts, and the qualifying spending requirements.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-instrument text-[26px] text-black mb-3">Visual Clutter</h3>
+                        <p class="text-[#555555] text-[17px] leading-relaxed">Legal disclaimers were fighting for visual
+                            attention alongside the primary conversion buttons, creating a hierarchy nightmare.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-instrument text-[26px] text-black mb-3">User Expectation</h3>
+                        <p class="text-[#555555] text-[17px] leading-relaxed">Users expected clear reward values and
+                            simple, structured timelines to understand exactly how to claim their gifts without reading
+                            a legal manual.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 04: Design Strategy -->
+            <section id="strategy" class="mb-32 section-target">
+                <h2 class="font-instrument text-[36px] md:text-[44px] text-[#111111] flex items-center gap-6 mb-12">
+                    <span
+                        class="font-plex text-[#A09D96] text-[12px] tracking-[0.1em] uppercase font-bold relative -top-1">04</span>
+                    Design Strategy
+                </h2>
+                <div class="space-y-12">
+                    <div class="flex flex-col sm:flex-row gap-8 items-start sm:items-center">
+                        <div
+                            class="w-full sm:w-[220px] shrink-0 aspect-square bg-[#f6f3ec] border border-[rgba(181,181,173,0.5)] rounded-2xl overflow-hidden flex items-center justify-center">
+                            <img src="image/image_design-strategy_01.webp" alt="Progressive Disclosure strategy"
+                                class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col gap-3">
+                            <h3 class="font-instrument text-[24px] text-black">Progressive Disclosure</h3>
+                            <p class="text-[#555555] text-[17px] leading-relaxed">Decouple marketing copy from heavy
+                                compliance text to serve both business conversion goals and legal requirements
+                                simultaneously.</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-8 items-start sm:items-center">
+                        <div
+                            class="w-full sm:w-[220px] shrink-0 aspect-square bg-[#f4f3ef] border border-[rgba(181,181,173,0.5)] rounded-2xl overflow-hidden flex items-center justify-center">
+                            <img src="image/image_design-strategy_02.webp" alt="Progressive Disclosure strategy"
+                                class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col gap-3">
+                            <h3 class="font-instrument text-[24px] text-black">Visual Comparison</h3>
+                            <p class="text-[#555555] text-[17px] leading-relaxed">Translate text-heavy rewards into
+                                easily scannable, iconography-driven tiers to accelerate cognitive processing.</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-8 items-start sm:items-center">
+                        <div
+                            class="w-full sm:w-[220px] shrink-0 aspect-square bg-[#f2f3ed] border border-[rgba(181,181,173,0.5)] rounded-2xl overflow-hidden flex items-center justify-center">
+                            <img src="image/image_design-strategy_03.webp" alt="Progressive Disclosure strategy"
+                                class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col gap-3">
+                            <h3 class="font-instrument text-[24px] text-black">Component Modularity</h3>
+                            <p class="text-[#555555] text-[17px] leading-relaxed">Build a flexible template that can be
+                                rapidly deployed for different banking partners to scale campaign operations.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 05: Solution -->
+            <section id="solution" class="mb-32 section-target">
+                <h2 class="font-instrument text-[36px] md:text-[44px] text-[#111111] flex items-center gap-6 mb-12">
+                    <span
+                        class="font-plex text-[#A09D96] text-[12px] tracking-[0.1em] uppercase font-bold relative -top-1">05</span>
+                    Solution
+                </h2>
+
+                <!-- Solution Images (Individual) -->
+                <div class="mb-16 -mx-6 md:ml-0 md:-mr-12 lg:-mr-32 relative group" id="solutionSlider">
+                    <div class="w-full overflow-hidden relative rounded-[20px]" style="height: 480px;">
+                        <div class="flex transition-transform duration-500 ease-in-out gap-4 h-full" id="solutionTrack">
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center gap-5 mt-10">
+                        <div class="bg-[rgba(248,249,250,0.8)] relative rounded-[9999px] flex items-center justify-center gap-4 px-4 py-4 border border-[rgba(229,231,235,0.5)]"
+                            id="solutionDots"></div>
+                        <button
+                            class="w-12 h-12 bg-[rgba(248,249,250,0.8)] rounded-full flex items-center justify-center border border-[rgba(229,231,235,0.5)] hover:bg-[rgba(209,213,219,0.8)] transition-colors"
+                            id="solutionPauseBtn"><svg id="solutionPauseIcon" class="w-6 h-6 fill-[#1C1B1F]"
+                                viewBox="0 0 24 24">
+                                <path d="M14 19V5H18V19H14ZM6 19V5H10V19H6Z" />
+                            </svg><svg id="solutionPlayIcon" class="w-6 h-6 fill-[#1C1B1F] hidden" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                            </svg><svg id="solutionReplayIcon" class="w-6 h-6 fill-[#1C1B1F] hidden"
+                                viewBox="0 0 24 24">
+                                <path
+                                    d="M7 19V17H14.1C15.15 17 16.0625 16.6667 16.8375 16C17.6125 15.3333 18 14.5 18 13.5C18 12.5 17.6125 11.6667 16.8375 11C16.0625 10.3333 15.15 10 14.1 10H7.8L10.4 12.6L9 14L4 9L9 4L10.4 5.4L7.8 8H14.1C15.7167 8 17.1042 8.525 18.2625 9.575C19.4208 10.625 20 11.9333 20 13.5C20 15.0667 19.4208 16.375 18.2625 17.425C17.1042 18.475 15.7167 19 14.1 19H7Z" />
+                            </svg></button>
+                    </div>
+                </div>
+
+                <div class="space-y-10">
+                    <div>
+                        <h3 class="font-instrument text-[24px] text-black mb-3">Scannable Reward Tiers</h3>
+                        <p class="text-[#555555] text-[17px] leading-relaxed">Designed a highly visual campaign template
+                            highlighting reward tiers (e.g., Tier 1 vs. Tier 2 spending requirements) using clear icons
+                            and distinct color grouping.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-instrument text-[24px] text-black mb-3">T&C Accordions</h3>
+                        <p class="text-[#555555] text-[17px] leading-relaxed">Placed heavy legal and compliance text
+                            inside expandable accordions at the bottom of the page, keeping the main interaction flow
+                            clean while fully satisfying the Compliance team.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-instrument text-[24px] text-black mb-3">Sticky Conversion Bar</h3>
+                        <p class="text-[#555555] text-[17px] leading-relaxed">Added a persistent "Apply Now" bar on
+                            mobile to capture intent at any scrolling depth, drastically reducing the interaction cost
+                            to convert.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 06: Impact -->
+            <section id="impact" class="mb-32 section-target">
+                <h2 class="font-instrument text-[36px] md:text-[44px] text-[#111111] flex items-center gap-6 mb-12">
+                    <span
+                        class="font-plex text-[#A09D96] text-[12px] tracking-[0.1em] uppercase font-bold relative -top-1">06</span>
+                    Impact
+                </h2>
+                <div class="space-y-8">
+                    <div class="flex gap-5 items-start">
+                        <div class="w-5 h-5 shrink-0 mt-1 flex items-center justify-center">
+                            <i data-lucide="trending-up" class="w-5 h-5 text-[#A09D96]"></i>
+                        </div>
+                        <p class="text-[#111111] text-[18px] leading-relaxed">Significantly increased the Campaign
+                            Click-Through Rate (CTR), maximizing the ROI on marketing ad spend.</p>
+                    </div>
+                    <div class="flex gap-5 items-start">
+                        <div class="w-5 h-5 shrink-0 mt-1 flex items-center justify-center">
+                            <i data-lucide="trending-up" class="w-5 h-5 text-[#A09D96]"></i>
+                        </div>
+                        <p class="text-[#111111] text-[18px] leading-relaxed">Reduced user time-to-conversion by
+                            simplifying the visual decision-making process.</p>
+                    </div>
+                    <div class="flex gap-5 items-start">
+                        <div class="w-5 h-5 shrink-0 mt-1 flex items-center justify-center">
+                            <i data-lucide="trending-up" class="w-5 h-5 text-[#A09D96]"></i>
+                        </div>
+                        <p class="text-[#111111] text-[18px] leading-relaxed">Sped up internal design deployment times
+                            by providing a modular, reusable campaign template, establishing a new operational standard
+                            for the marketing team.</p>
+                    </div>
+                </div>
+            </section>
+        </article>
+    </main>
+    <nav class="max-w-[1280px] mx-auto px-6 md:px-12 pb-24 md:pb-32">
+        <div
+            class="border-t border-[#D8D4CC] pt-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-12">
+            <a href="../project_3/index.html" class="flex items-center gap-6 group"><svg
+                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    data-lucide="arrow-left" aria-hidden="true"
+                    class="lucide lucide-arrow-left w-6 h-6 text-[#888888] group-hover:text-[#111111] group-hover:-translate-x-2 transition-all">
+                    <path d="m12 19-7-7 7-7"></path>
+                    <path d="M19 12H5"></path>
+                </svg>
+                <div class="flex flex-col"><span
+                        class="font-plex text-[10px] tracking-[0.2em] text-[#888888] uppercase mb-1">Previous</span><span
+                        class="font-sans text-[20px] text-[#111111] group-hover:opacity-80 transition-opacity">MoneyHero
+                        Result Page Revamp</span></div>
+            </a>
+            <a href="../project_5/index.html" class="flex items-center gap-6 group">
+                <div class="flex flex-col items-end text-right"><span
+                        class="font-plex text-[10px] tracking-[0.2em] text-[#888888] uppercase mb-1">Next</span><span
+                        class="font-sans text-[20px] text-[#111111] group-hover:opacity-80 transition-opacity">Reward
+                        Redemption Flow Redesign</span></div><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" aria-hidden="true"
+                    class="lucide lucide-arrow-right w-6 h-6 text-[#888888] group-hover:text-[#111111] group-hover:translate-x-2 transition-all">
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Contact Footer -->
+    <footer id="contact" class="project-page border-t border-[#D8D4CC] mt-12">
+        <div
+            class="contact-section max-w-[1280px] mx-auto px-6 md:px-12 py-24 md:py-32 flex flex-col items-center text-center gap-10">
+            <div class="flex flex-col gap-6">
+                <h2 class="font-instrument text-[32px] md:text-[42px] text-[#0a0a0a] leading-tight max-w-[640px]">Let's
+                    build meaningful product experiences together.</h2>
+                <p class="font-sans text-[17px] text-[rgba(10,10,10,0.6)] max-w-[580px] leading-relaxed">Currently open
+                    to Senior Product Design roles in FinTech and InsurTech where I can drive customer acquisition and
+                    shape design culture.</p>
+            </div>
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="https://wa.me/"
+                    class="cta-button flex items-center gap-3 bg-[#0a0a0a] text-white font-plex text-[10px] tracking-[3.2px] uppercase px-8 py-4 rounded-full hover:bg-black transition-all">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp Me
+                </a>
+                <a href="mailto:hello@michaelfan.com"
+                    class="cta-button flex items-center gap-3 border border-[#0a0a0a] text-[#0a0a0a] font-plex text-[10px] tracking-[3.2px] uppercase px-8 py-4 rounded-full hover:bg-[#0a0a0a] hover:text-white transition-all">
+                    <i data-lucide="mail" class="w-4 h-4"></i> Email Me
+                </a>
+                <a href="https://www.linkedin.com/in/michael-fan-chun-ho-a910a9325/" target="_blank"
+                    class="cta-button flex items-center justify-center w-full sm:w-auto gap-2 border border-[#111111] text-[#111111] bg-transparent text-[10px] tracking-[0.2em] uppercase font-bold px-8 py-4 rounded-full hover:bg-black/5 transition-colors"><svg
+                        width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <g opacity="0.8">
+                            <path
+                                d="M10.6667 5.33301C11.7276 5.33301 12.745 5.75444 13.4952 6.50458C14.2453 7.25473 14.6667 8.27214 14.6667 9.33301V13.9997H12.0001V9.33301C12.0001 8.97939 11.8596 8.64025 11.6096 8.3902C11.3595 8.14015 11.0204 7.99967 10.6667 7.99967C10.3131 7.99967 9.97399 8.14015 9.72394 8.3902C9.47389 8.64025 9.33341 8.97939 9.33341 9.33301V13.9997H6.66675V9.33301C6.66675 8.27214 7.08818 7.25473 7.83832 6.50458C8.58847 5.75444 9.60588 5.33301 10.6667 5.33301Z"
+                                stroke="#0A0A0A" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M4 6H1.33334V13.9997H4V6Z" stroke="#0A0A0A" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path
+                                d="M2.66667 4C3.40305 4 4 3.40305 4 2.66667C4 1.93029 3.40305 1.33334 2.66667 1.33334C1.93029 1.33301 1.33334 1.93029 1.33334 2.66667C1.33334 3.40305 1.93029 4 2.66667 4Z"
+                                stroke="#0A0A0A" stroke-linecap="round" stroke-linejoin="round" />
+                        </g>
+                    </svg> LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div id="lightboxModal" class="fixed inset-0 z-[200] hidden items-center justify-center"
+        style="backdrop-filter:blur(5px);background:rgba(0,0,0,0.4)">
+        <div class="absolute flex flex-col items-start"
+            style="top:50%;left:50%;transform:translate(-50%,-50%);height:800px;width:min(1280px,100vw);min-width:min(720px,100vw)">
+            <div id="lightboxContent"
+                class="bg-white flex flex-col overflow-hidden relative rounded-[24px] w-full h-full"
+                style="box-shadow:0px 25px 50px -12px rgba(0,0,0,0.25)">
+                <div id="lightboxScrollArea" class="flex-1 min-h-0 relative w-full overflow-auto"
+                    style="cursor:grab;user-select:none">
+                    <div id="lightboxWrapper"
+                        style="display: flex; padding: 32px; min-width: max-content; min-height: 100%;">
+                        <img id="lightboxImage" src="" alt="Zoomed view"
+                            style="display: block; margin: auto; max-width: none; pointer-events: none; transition: width 0.3s ease-in-out; width: 724px;"
+                            draggable="false">
+                    </div>
+                </div>
+                <div id="lightboxZoomTabs" class="absolute flex gap-2 items-center justify-center p-1 rounded-[999px]"
+                    style="bottom:56px;left:50%;transform:translateX(-50%);backdrop-filter:blur(2px);background:rgba(0,0,0,0.8)">
+                    <div class="absolute border border-[rgba(255,255,255,0.1)] inset-0 pointer-events-none rounded-[9999px]"
+                        style="box-shadow:0px 4px 20px 0px rgba(0,0,0,0.25)"></div>
+                    <button
+                        class="lightbox-zoom-tab flex items-center justify-center px-4 py-2 rounded-[9999px] font-plex text-xs whitespace-nowrap bg-white text-[#1f2937]"
+                        data-zoom="fit">Fit</button>
+                    <button
+                        class="lightbox-zoom-tab flex items-center justify-center px-4 py-2 rounded-[9999px] font-plex text-xs text-[#9a9fa5] hover:bg-white/10 transition-colors whitespace-nowrap"
+                        data-zoom="50">50%</button>
+                    <button
+                        class="lightbox-zoom-tab flex items-center justify-center px-4 py-2 rounded-[9999px] font-plex text-xs text-[#9a9fa5] hover:bg-white/10 transition-colors whitespace-nowrap"
+                        data-zoom="100">100%</button>
+                    <button
+                        class="lightbox-zoom-tab flex items-center justify-center px-4 py-2 rounded-[9999px] font-plex text-xs text-[#9a9fa5] hover:bg-white/10 transition-colors whitespace-nowrap"
+                        data-zoom="200">200%</button>
+                </div>
+                <div
+                    class="absolute flex items-center justify-end left-0 pb-2 pt-4 px-4 top-0 w-full pointer-events-none">
+                    <button id="lightboxClose"
+                        class="flex items-center justify-center rounded-full w-12 h-12 hover:opacity-80 transition-opacity pointer-events-auto"
+                        style="background:#1f2937" aria-label="Close lightbox">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 16 16">
+                            <path d="M12 4L4 12" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1.667" />
+                            <path d="M4 4L12 12" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1.667" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            // Loader
+            const loader = document.getElementById('initialLoader');
+            setTimeout(() => { loader.style.opacity = '0'; setTimeout(() => loader.remove(), 700); }, 400);
+
+            // Megamenu
+            const workToggle = document.getElementById('workToggle');
+            const workMenu = document.getElementById('workMenu');
+            const workChevron = document.getElementById('workChevron');
+            const closeWorkMenuBtn = document.getElementById('closeWorkMenuBtn');
+            function openMenu() { workMenu.classList.add('is-open'); workChevron.style.transform = 'rotate(180deg)'; }
+            function closeMenu() { workMenu.classList.remove('is-open'); workChevron.style.transform = ''; }
+            workToggle.addEventListener('click', e => { e.stopPropagation(); workMenu.classList.contains('is-open') ? closeMenu() : openMenu(); });
+            closeWorkMenuBtn.addEventListener('click', closeMenu);
+            document.addEventListener('click', e => { if (!workMenu.contains(e.target) && e.target !== workToggle) closeMenu(); });
+
+            // Mobile drawer
+            const mobileDrawer = document.getElementById('mobileDrawer');
+            const mobileDrawerBg = document.getElementById('mobileDrawerBg');
+            const mobileDrawerPanel = document.getElementById('mobileDrawerPanel');
+            const mobileMenuOpenBtn = document.getElementById('mobileMenuOpenBtn');
+            const mobileMenuCloseBtn = document.getElementById('mobileMenuCloseBtn');
+            function openDrawer() { mobileDrawer.style.pointerEvents = 'auto'; mobileDrawerBg.style.opacity = '1'; mobileDrawerPanel.style.transform = 'translateX(0)'; }
+            function closeDrawer() { mobileDrawerBg.style.opacity = '0'; mobileDrawerPanel.style.transform = 'translateX(100%)'; setTimeout(() => mobileDrawer.style.pointerEvents = 'none', 400); }
+            mobileMenuOpenBtn.addEventListener('click', openDrawer);
+            mobileMenuCloseBtn.addEventListener('click', closeDrawer);
+            mobileDrawerBg.addEventListener('click', closeDrawer);
+
+            // Generic slider factory
+            function initSlider(trackId, dotsId, nextBtnId, count, autoPlay = true) {
+                const track = document.getElementById(trackId);
+                const dotsContainer = document.getElementById(dotsId);
+                const nextBtn = document.getElementById(nextBtnId);
+                if (!track || !dotsContainer || !nextBtn) return;
+                let current = 0;
+                let paused = false;
+                let timer;
+
+                // Build dots
+                for (let i = 0; i < count; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'relative rounded-full bg-[rgba(31,41,55,0.3)] transition-all duration-300 overflow-hidden';
+                    dot.style.width = '16px';
+                    dot.style.height = '16px';
+                    dot.addEventListener('click', () => goTo(i));
+                    dotsContainer.appendChild(dot);
+                }
+
+                function updateDots() {
+                    const dots = dotsContainer.children;
+                    for (let i = 0; i < dots.length; i++) {
+                        dots[i].classList.remove('dot-active');
+                        dots[i].style.width = '16px';
+                    }
+                    dots[current].classList.add('dot-active');
+                }
+
+                function goTo(n) {
+                    current = (n + count) % count;
+                    track.style.transform = `translateX(-${current * 100}%)`;
+                    updateDots();
+                    if (autoPlay) { clearInterval(timer); startTimer(); }
+                }
+
+                function startTimer() {
+                    timer = setInterval(() => { if (!paused) goTo(current + 1); }, 3000);
+                }
+
+                nextBtn.addEventListener('click', () => goTo(current + 1));
+                track.parentElement.addEventListener('mouseenter', () => paused = true);
+                track.parentElement.addEventListener('mouseleave', () => paused = false);
+
+                updateDots();
+                if (autoPlay) startTimer();
+            }
+
+
+            // Lightbox
+            const lightboxModal = document.getElementById('lightboxModal');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const lightboxClose = document.getElementById('lightboxClose');
+            const lightboxScrollArea = document.getElementById('lightboxScrollArea');
+            let lbDragging = false, lbStartX = 0, lbStartY = 0, lbScrollLeft = 0, lbScrollTop = 0;
+
+            if (lightboxScrollArea) {
+                lightboxScrollArea.addEventListener('mousedown', (e) => {
+                    lbDragging = true;
+                    lightboxScrollArea.classList.add('is-dragging');
+                    lbStartX = e.clientX;
+                    lbStartY = e.clientY;
+                    lbScrollLeft = lightboxScrollArea.scrollLeft;
+                    lbScrollTop = lightboxScrollArea.scrollTop;
+                });
+                document.addEventListener('mousemove', (e) => {
+                    if (!lbDragging) return;
+                    e.preventDefault();
+                    lightboxScrollArea.scrollLeft = lbScrollLeft - (e.clientX - lbStartX);
+                    lightboxScrollArea.scrollTop = lbScrollTop - (e.clientY - lbStartY);
+                });
+                document.addEventListener('mouseup', () => {
+                    lbDragging = false;
+                    lightboxScrollArea.classList.remove('is-dragging');
+                });
+            }
+
+            function setLightboxZoom(level) {
+                const sizeMap = { 'fit': '724px', '50': '900px', '100': '1024px', '200': '2048px' };
+                const zoomWidth = sizeMap[level] || '724px';
+                lightboxImage.style.width = zoomWidth;
+
+                document.querySelectorAll('.lightbox-zoom-tab').forEach(btn => {
+                    if (btn.getAttribute('data-zoom') === level) {
+                        btn.classList.add('bg-white', 'text-[#1f2937]');
+                        btn.classList.remove('text-[#9a9fa5]', 'hover:bg-white/10');
+                    } else {
+                        btn.classList.remove('bg-white', 'text-[#1f2937]');
+                        btn.classList.add('text-[#9a9fa5]', 'hover:bg-white/10');
+                    }
+                });
+            }
+
+            let lbOriginalOverflow = '';
+            let lbOriginalPaddingRight = '';
+
+            function openLightbox(src) {
+                const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+                lbOriginalOverflow = document.body.style.overflow;
+                lbOriginalPaddingRight = document.body.style.paddingRight;
+
+                document.body.style.overflow = 'hidden';
+                if (scrollbarWidth > 0) {
+                    document.body.style.paddingRight = `${scrollbarWidth}px`;
+                }
+
+                lightboxImage.src = src;
+                lightboxImage.style.width = '724px';
+                lightboxModal.classList.remove('hidden');
+                lightboxModal.classList.add('flex');
+                setLightboxZoom('fit');
+                lightboxScrollArea.scrollTop = 0;
+                lightboxScrollArea.scrollLeft = 0;
+            }
+
+            function closeLightbox() {
+                lightboxModal.classList.add('hidden');
+                lightboxModal.classList.remove('flex');
+                lightboxImage.src = '';
+
+                document.body.style.overflow = lbOriginalOverflow;
+                document.body.style.paddingRight = lbOriginalPaddingRight;
+            }
+
+            if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+            if (lightboxModal) lightboxModal.addEventListener('click', (e) => { if (e.target === lightboxModal) closeLightbox(); });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !lightboxModal.classList.contains('hidden')) closeLightbox(); });
+
+            document.querySelectorAll('.lightbox-trigger').forEach(img => {
+                img.addEventListener('click', () => openLightbox(img.src));
+            });
+            document.querySelectorAll('.js-zoom-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const src = btn.getAttribute('data-src');
+                    if (src) openLightbox(src);
+                });
+            });
+            document.querySelectorAll('.lightbox-zoom-tab').forEach(btn => {
+                btn.addEventListener('click', () => setLightboxZoom(btn.getAttribute('data-zoom')));
+            });
+
+            // Problem slider
+            const problemSliderWrapper = document.getElementById('problemSlider');
+            const problemTrack = document.getElementById('problemTrack');
+            const problemDotsContainer = document.getElementById('problemDots');
+            const problemPauseBtn = document.getElementById('problemPauseBtn');
+            const problemSlidesData = [
+                { iframe: '<iframe style="border: none; width: 100%; height: 100%;" src="https://embed.figma.com/proto/yPSPp1wBdpFJA13oQdYmOW/P2-%7C-Portfolio-%7C-2024-SG-Campaign-Page-CC-Citi?page-id=210%3A19639&node-id=210-24515&p=f&viewport=668%2C181%2C0.08&scaling=scale-down&content-scaling=fixed&embed-host=share" allowfullscreen></iframe>' },
+                { src: 'https://www.figma.com/api/mcp/asset/0cfe9758-cf5e-4d09-878e-adf237e8221e' }
+            ];
+            let currentSlide = 0, isPlaying = true, interval;
+
+            problemSlidesData.forEach((s, i) => {
+                const el = document.createElement('div');
+                el.className = 'slide-item relative flex-shrink-0 w-[85%] sm:w-[80%] flex bg-[#EEF0F3] rounded-[20px] overflow-hidden flex-col items-center justify-center';
+                if (s.iframe) {
+                    el.innerHTML = s.iframe;
+                } else {
+                    let imgClass = 'w-full h-full object-contain mix-blend-multiply p-4 md:p-8';
+                    if (i === 1) {
+                        imgClass = 'w-full h-full object-cover object-top mix-blend-multiply p-4 md:p-8';
+                    }
+                    el.innerHTML = `<img src="${s.src}" alt="Problem ${i + 1}" class="${imgClass}" onerror="this.style.display='none'"><button class="absolute bottom-6 right-6 w-10 h-10 hover:scale-105 transition-transform z-10 rounded-full shadow-lg"><svg viewBox="0 0 40 40" fill="none" class="w-full h-full"><rect width="40" height="40" rx="20" fill="#1F2937"/><mask id="mp${i}" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="8" y="8" width="24" height="24"><rect x="8" y="8" width="24" height="24" fill="#D9D9D9"/></mask><g mask="url(#mp${i})"><path d="M13 27V21H15V25H19V27H13ZM25 19V15H21V13H27V19H25Z" fill="#F8F9FA"/></g></svg></button>`;
+                    el.querySelector('button').addEventListener('click', (e) => { e.stopPropagation(); openLightbox(s.src); });
+                }
+                problemTrack.appendChild(el);
+                const d = document.createElement('button');
+                d.className = 'block relative overflow-hidden rounded-full transition-all duration-300 w-4 h-4 bg-[rgba(31,41,55,0.3)]';
+                d.addEventListener('click', () => { clearInterval(interval); currentSlide = i; updateSlider(); if (isPlaying) startAuto(); });
+                problemDotsContainer.appendChild(d);
+            });
+
+            function updateSlider() {
+                // 1. Sync Dots UI
+                problemDotsContainer.querySelectorAll('button').forEach((d, i) => d.classList.toggle('dot-active', i === currentSlide));
+
+                // 2. Base Centering Math
+                const trackWidth = problemTrack.parentElement.offsetWidth;
+                const slides = problemTrack.querySelectorAll('.slide-item');
+                if (slides.length === 0) return;
+                const slideWidth = slides[0].offsetWidth;
+                const gap = 16;
+                const centerOffset = (trackWidth - slideWidth) / 2;
+                let moveAmount = (slideWidth + gap) * currentSlide - centerOffset;
+
+                // 3. BOUNDARY CLAMPING
+                const maxMove = problemTrack.scrollWidth - trackWidth;
+                moveAmount = Math.max(0, Math.min(moveAmount, maxMove));
+
+                // 4. Transform & Fading
+                problemTrack.style.transform = `translateX(-${moveAmount}px)`;
+                Array.from(problemTrack.children).forEach((s, i) => {
+                    s.style.opacity = i === currentSlide ? '1' : '0.4';
+                    s.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                });
+            }
+            let hasCompleted = false;
+            function startAuto() { clearInterval(interval); interval = setInterval(() => { if (currentSlide + 1 >= problemSlidesData.length) { clearInterval(interval); isPlaying = false; hasCompleted = true; document.getElementById('pauseIcon')?.classList.add('hidden'); document.getElementById('playIcon')?.classList.add('hidden'); document.getElementById('replayIcon')?.classList.remove('hidden'); return; } currentSlide++; updateSlider(); }, 3000); }
+            startAuto(); setTimeout(updateSlider, 100);
+            problemSliderWrapper.addEventListener('mouseenter', () => { clearInterval(interval); problemSliderWrapper.classList.add('is-paused'); });
+            problemSliderWrapper.addEventListener('mouseleave', () => { if (isPlaying && lightboxModal.classList.contains('hidden')) { startAuto(); problemSliderWrapper.classList.remove('is-paused'); } });
+            problemPauseBtn.addEventListener('click', () => {
+                if (hasCompleted) { currentSlide = 0; hasCompleted = false; isPlaying = true; updateSlider(); document.getElementById('replayIcon')?.classList.add('hidden'); document.getElementById('pauseIcon')?.classList.remove('hidden'); document.getElementById('playIcon')?.classList.add('hidden'); startAuto(); return; }
+                isPlaying = !isPlaying;
+                document.getElementById('pauseIcon')?.classList.toggle('hidden', !isPlaying);
+                document.getElementById('playIcon')?.classList.toggle('hidden', isPlaying);
+                if (isPlaying) { startAuto(); problemSliderWrapper.classList.remove('is-paused'); } else { clearInterval(interval); problemSliderWrapper.classList.add('is-paused'); }
+            });
+
+            // Research slider
+            const researchSliderWrapper = document.getElementById('researchSlider');
+            if (researchSliderWrapper) {
+                const researchTrack = document.getElementById('researchTrack');
+                const researchDotsContainer = document.getElementById('researchDots');
+                const researchPauseBtn = document.getElementById('researchPauseBtn');
+                const researchSlidesData = [
+                    { src: 'https://www.figma.com/api/mcp/asset/e9eef9fe-1c23-479e-997a-ed441d74b767' },
+                    { src: 'https://www.figma.com/api/mcp/asset/a58ea1a6-b819-411b-98ff-064cda0ed6d2' },
+                    { src: 'https://www.figma.com/api/mcp/asset/cdbc8eab-a35d-4ec2-bccc-f60a922561db' },
+                    { src: 'https://www.figma.com/api/mcp/asset/08431896-6f62-4850-ae43-175bb4475429' },
+                    { src: 'https://www.figma.com/api/mcp/asset/3376c6f5-a161-424e-abb1-c74c6f6dc44f' },
+                    { src: 'https://www.figma.com/api/mcp/asset/02c5e63c-961c-4d9f-8269-2aea4c889916' }
+                ];
+                let currentResearchSlide = 0, isResearchPlaying = true, researchInterval, hasResearchCompleted = false;
+
+                researchSlidesData.forEach((s, i) => {
+                    const el = document.createElement('div');
+                    el.className = 'slide-item relative flex-shrink-0 w-[85%] sm:w-[80%] flex bg-[#EEF0F3] rounded-[20px] overflow-hidden flex-col items-center justify-center';
+                    let imgClass = 'w-full h-full object-contain mix-blend-multiply p-4 md:p-8';
+
+                    el.innerHTML = `<img src="${s.src}" alt="Research ${i + 1}" class="${imgClass}" onerror="this.style.display='none'"><button class="absolute bottom-6 right-6 w-10 h-10 hover:scale-105 transition-transform z-10 rounded-full shadow-lg"><svg viewBox="0 0 40 40" fill="none" class="w-full h-full"><rect width="40" height="40" rx="20" fill="#1F2937"/><mask id="mr${i}" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="8" y="8" width="24" height="24"><rect x="8" y="8" width="24" height="24" fill="#D9D9D9"/></mask><g mask="url(#mr${i})"><path d="M13 27V21H15V25H19V27H13ZM25 19V15H21V13H27V19H25Z" fill="#F8F9FA"/></g></svg></button>`;
+                    el.querySelector('button').addEventListener('click', (e) => { e.stopPropagation(); openLightbox(s.src); });
+
+                    researchTrack.appendChild(el);
+                    const d = document.createElement('button');
+                    d.className = 'block relative overflow-hidden rounded-full transition-all duration-300 w-4 h-4 bg-[rgba(31,41,55,0.3)]';
+                    d.addEventListener('click', () => { clearInterval(researchInterval); currentResearchSlide = i; updateResearchSlider(); if (isResearchPlaying) startResearchAuto(); });
+                    researchDotsContainer.appendChild(d);
+                });
+
+                function updateResearchSlider() {
+                    researchDotsContainer.querySelectorAll('button').forEach((d, i) => d.classList.toggle('dot-active', i === currentResearchSlide));
+                    const trackWidth = researchTrack.parentElement.offsetWidth;
+                    const slides = researchTrack.querySelectorAll('.slide-item');
+                    if (slides.length === 0) return;
+                    const slideWidth = slides[0].offsetWidth;
+                    const mathGap = 16;
+                    const centerOffset = (trackWidth - slideWidth) / 2;
+                    let moveAmount = (slideWidth + mathGap) * currentResearchSlide - centerOffset;
+                    const maxMove = researchTrack.scrollWidth - trackWidth;
+                    moveAmount = Math.max(0, Math.min(moveAmount, maxMove));
+                    researchTrack.style.transform = `translateX(-${moveAmount}px)`;
+                    Array.from(researchTrack.children).forEach((s, i) => {
+                        s.style.opacity = i === currentResearchSlide ? '1' : '0.4';
+                        s.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                    });
+                }
+
+                function startResearchAuto() {
+                    clearInterval(researchInterval);
+                    researchInterval = setInterval(() => {
+                        if (currentResearchSlide + 1 >= researchSlidesData.length) {
+                            clearInterval(researchInterval); isResearchPlaying = false; hasResearchCompleted = true;
+                            document.getElementById('researchPauseIcon')?.classList.add('hidden');
+                            document.getElementById('researchPlayIcon')?.classList.add('hidden');
+                            document.getElementById('researchReplayIcon')?.classList.remove('hidden');
+                            return;
+                        }
+                        currentResearchSlide++; updateResearchSlider();
+                    }, 3000);
+                }
+
+                startResearchAuto(); setTimeout(updateResearchSlider, 100);
+
+                researchSliderWrapper.addEventListener('mouseenter', () => { clearInterval(researchInterval); researchSliderWrapper.classList.add('is-paused'); });
+                researchSliderWrapper.addEventListener('mouseleave', () => { if (isResearchPlaying && document.getElementById('lightboxModal')?.classList.contains('hidden')) { startResearchAuto(); researchSliderWrapper.classList.remove('is-paused'); } });
+
+                researchPauseBtn.addEventListener('click', () => {
+                    if (hasResearchCompleted) {
+                        currentResearchSlide = 0; hasResearchCompleted = false; isResearchPlaying = true;
+                        updateResearchSlider();
+                        document.getElementById('researchReplayIcon')?.classList.add('hidden');
+                        document.getElementById('researchPauseIcon')?.classList.remove('hidden');
+                        document.getElementById('researchPlayIcon')?.classList.add('hidden');
+                        startResearchAuto(); return;
+                    }
+                    isResearchPlaying = !isResearchPlaying;
+                    document.getElementById('researchPauseIcon')?.classList.toggle('hidden', !isResearchPlaying);
+                    document.getElementById('researchPlayIcon')?.classList.toggle('hidden', isResearchPlaying);
+                    if (isResearchPlaying) { startResearchAuto(); researchSliderWrapper.classList.remove('is-paused'); } else { clearInterval(researchInterval); researchSliderWrapper.classList.add('is-paused'); }
+                });
+            }
+
+            // Solution slider
+            const solutionSliderWrapper = document.getElementById('solutionSlider');
+            if (solutionSliderWrapper) {
+                const solutionTrack = document.getElementById('solutionTrack');
+                const solutionDotsContainer = document.getElementById('solutionDots');
+                const solutionPauseBtn = document.getElementById('solutionPauseBtn');
+                const solutionSlidesData = [
+                    { iframe: 'https://embed.figma.com/proto/yPSPp1wBdpFJA13oQdYmOW/P2-%7C-Portfolio-%7C-2024-SG-Campaign-Page-CC-Citi?page-id=805%3A20579&node-id=805-20586&viewport=668%2C181%2C0.08&scaling=scale-down&content-scaling=fixed&embed-host=share' },
+                    { iframe: 'https://embed.figma.com/proto/yPSPp1wBdpFJA13oQdYmOW/P2-%7C-Portfolio-%7C-2024-SG-Campaign-Page-CC-Citi?page-id=827%3A22661&node-id=827-22949&viewport=921%2C838%2C0.76&scaling=scale-down&content-scaling=fixed&embed-host=share' },
+                    { iframe: 'https://embed.figma.com/proto/yPSPp1wBdpFJA13oQdYmOW/P2-%7C-Portfolio-%7C-2024-SG-Campaign-Page-CC-Citi?page-id=827%3A24725&node-id=827-25310&viewport=695%2C375%2C0.76&scaling=scale-down&content-scaling=fixed&embed-host=share' },
+                    { iframe: 'https://embed.figma.com/proto/yPSPp1wBdpFJA13oQdYmOW/P2-%7C-Portfolio-%7C-2024-SG-Campaign-Page-CC-Citi?page-id=827%3A26789&node-id=827-27634&viewport=716%2C213%2C0.18&scaling=scale-down&content-scaling=fixed&embed-host=share' },
+                    { src: 'https://www.figma.com/api/mcp/asset/e8e147f2-7df7-4a31-9f56-a6511b788d9c' }
+
+                ];
+                let currentSolutionSlide = 0, isSolutionPlaying = true, solutionInterval, hasSolutionCompleted = false;
+
+                solutionSlidesData.forEach((s, i) => {
+                    const el = document.createElement('div');
+                    if (s.iframe) {
+                        el.className = 'slide-item relative flex-shrink-0 w-[50%] flex bg-[#EEF0F3] rounded-[20px] overflow-hidden flex-col items-center justify-center';
+                        el.innerHTML = `<iframe style="border: none; width: 100%; height: 100%;" src="${s.iframe}" allowfullscreen></iframe>`;
+                    } else {
+                        el.className = 'slide-item relative flex-shrink-0 w-[85%] sm:w-[80%] flex bg-[#EEF0F3] rounded-[20px] overflow-hidden flex-col items-center justify-center';
+                        let imgClass = 'w-full h-full object-contain mix-blend-multiply p-4 md:p-8';
+                        el.innerHTML = `<img src="${s.src}" alt="Solution ${i + 1}" class="${imgClass}" onerror="this.style.display='none'"><button class="absolute bottom-6 right-6 w-10 h-10 hover:scale-105 transition-transform z-10 rounded-full shadow-lg"><svg viewBox="0 0 40 40" fill="none" class="w-full h-full"><rect width="40" height="40" rx="20" fill="#1F2937"/><mask id="ms${i}" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="8" y="8" width="24" height="24"><rect x="8" y="8" width="24" height="24" fill="#D9D9D9"/></mask><g mask="url(#ms${i})"><path d="M13 27V21H15V25H19V27H13ZM25 19V15H21V13H27V19H25Z" fill="#F8F9FA"/></g></svg></button>`;
+                        el.querySelector('button').addEventListener('click', (e) => { e.stopPropagation(); openLightbox(s.src); });
+                    }
+
+                    solutionTrack.appendChild(el);
+                    const d = document.createElement('button');
+                    d.className = 'block relative overflow-hidden rounded-full transition-all duration-300 w-4 h-4 bg-[rgba(31,41,55,0.3)]';
+                    d.addEventListener('click', () => { clearInterval(solutionInterval); currentSolutionSlide = i; updateSolutionSlider(); if (isSolutionPlaying) startSolutionAuto(); });
+                    solutionDotsContainer.appendChild(d);
+                });
+
+                function updateSolutionSlider() {
+                    solutionDotsContainer.querySelectorAll('button').forEach((d, i) => d.classList.toggle('dot-active', i === currentSolutionSlide));
+                    const trackWidth = solutionTrack.parentElement.offsetWidth;
+                    const slides = solutionTrack.querySelectorAll('.slide-item');
+                    if (slides.length === 0) return;
+                    const targetSlide = slides[currentSolutionSlide];
+                    const targetSlideWidth = targetSlide.offsetWidth;
+                    const centerOffset = (trackWidth - targetSlideWidth) / 2;
+                    let moveAmount = targetSlide.offsetLeft - centerOffset;
+                    const maxMove = Math.max(0, solutionTrack.scrollWidth - trackWidth);
+                    moveAmount = Math.max(0, Math.min(moveAmount, maxMove));
+                    solutionTrack.style.transform = `translateX(-${moveAmount}px)`;
+                    Array.from(solutionTrack.children).forEach((s, i) => {
+                        s.style.opacity = i === currentSolutionSlide ? '1' : '0.4';
+                        s.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                    });
+                }
+
+                function startSolutionAuto() {
+                    clearInterval(solutionInterval);
+                    solutionInterval = setInterval(() => {
+                        if (currentSolutionSlide + 1 >= solutionSlidesData.length) {
+                            clearInterval(solutionInterval); isSolutionPlaying = false; hasSolutionCompleted = true;
+                            document.getElementById('solutionPauseIcon')?.classList.add('hidden');
+                            document.getElementById('solutionPlayIcon')?.classList.add('hidden');
+                            document.getElementById('solutionReplayIcon')?.classList.remove('hidden');
+                            return;
+                        }
+                        currentSolutionSlide++; updateSolutionSlider();
+                    }, 3000);
+                }
+
+                startSolutionAuto(); setTimeout(updateSolutionSlider, 100);
+
+                solutionSliderWrapper.addEventListener('mouseenter', () => { clearInterval(solutionInterval); solutionSliderWrapper.classList.add('is-paused'); });
+                solutionSliderWrapper.addEventListener('mouseleave', () => { if (isSolutionPlaying && document.getElementById('lightboxModal')?.classList.contains('hidden')) { startSolutionAuto(); solutionSliderWrapper.classList.remove('is-paused'); } });
+
+                solutionPauseBtn.addEventListener('click', () => {
+                    if (hasSolutionCompleted) {
+                        currentSolutionSlide = 0; hasSolutionCompleted = false; isSolutionPlaying = true;
+                        updateSolutionSlider();
+                        document.getElementById('solutionReplayIcon')?.classList.add('hidden');
+                        document.getElementById('solutionPauseIcon')?.classList.remove('hidden');
+                        document.getElementById('solutionPlayIcon')?.classList.add('hidden');
+                        startSolutionAuto(); return;
+                    }
+                    isSolutionPlaying = !isSolutionPlaying;
+                    document.getElementById('solutionPauseIcon')?.classList.toggle('hidden', !isSolutionPlaying);
+                    document.getElementById('solutionPlayIcon')?.classList.toggle('hidden', isSolutionPlaying);
+                    if (isSolutionPlaying) { startSolutionAuto(); solutionSliderWrapper.classList.remove('is-paused'); } else { clearInterval(solutionInterval); solutionSliderWrapper.classList.add('is-paused'); }
+                });
+            }
+
+            // Scroll spy
+            const sections = document.querySelectorAll('.section-target');
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            const mobileTocLinks = document.querySelectorAll('.mobile-toc-link');
+            const obs = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id;
+                        sidebarLinks.forEach(a => {
+                            const active = a.dataset.section === id;
+                            a.querySelector('.sidebar-text')?.classList.toggle('sidebar-active', active);
+                            a.querySelector('.sidebar-num')?.classList.toggle('sidebar-active-num', active);
+                        });
+                        mobileTocLinks.forEach(a => {
+                            const active = a.getAttribute('href') === '#' + id;
+                            a.classList.toggle('mobile-toc-active', active);
+                        });
+                    }
+                });
+            }, { rootMargin: '-20% 0px -70% 0px' });
+            sections.forEach(s => obs.observe(s));
+
+            // Mobile TOC drag
+            const mobileToc = document.getElementById('mobileToc');
+            if (mobileToc) {
+                let isDown = false, startX, scrollLeft;
+                mobileToc.addEventListener('mousedown', e => { isDown = true; startX = e.pageX - mobileToc.offsetLeft; scrollLeft = mobileToc.scrollLeft; });
+                mobileToc.addEventListener('mouseleave', () => isDown = false);
+                mobileToc.addEventListener('mouseup', () => isDown = false);
+                mobileToc.addEventListener('mousemove', e => { if (!isDown) return; e.preventDefault(); const x = e.pageX - mobileToc.offsetLeft; mobileToc.scrollLeft = scrollLeft - (x - startX); });
+            }
+
+            // Header shadow on scroll
+            const mainHeader = document.getElementById('mainHeader');
+            window.addEventListener('scroll', () => {
+                mainHeader.style.borderBottomColor = window.scrollY > 10 ? '#D8D4CC' : 'transparent';
+            });
+        });
+    </script>
+</body>
+
+</html>
